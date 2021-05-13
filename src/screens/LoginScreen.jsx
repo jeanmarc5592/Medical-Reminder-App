@@ -1,16 +1,18 @@
 import React from 'react'
-import { SafeAreaView } from "react-native-safe-area-context";
-import { View } from 'react-native';
-import { Text, Button } from 'react-native-elements';
+import { StyleSheet } from 'react-native';
+import { Text, Button, withTheme } from 'react-native-elements';
+import { Screen } from '../components';
 
 const LoginScreen = ({ navigation }) => {
 
     return (
-        <SafeAreaView>
+        <Screen>
             <Text>LOGIN SCREEN</Text>
             <Button onPress={() => navigation.navigate("Signup")} title="Sign Up!" />
-        </SafeAreaView>
+        </Screen>
     )
 }
 
-export default LoginScreen;
+const styles = StyleSheet.create({});
+
+export default withTheme(LoginScreen);
