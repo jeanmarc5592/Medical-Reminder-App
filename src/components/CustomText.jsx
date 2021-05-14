@@ -2,14 +2,14 @@ import React from 'react'
 import { Text, withTheme } from 'react-native-elements';
 
 
-const CustomText = ({ theme, children, style: customStyle = {}, color = "dark", fontWeight = "regular", ...textProps }) => {
-    const defaultStyle = {
+const CustomText = ({ theme, children, style: customStyles = {}, color = "dark", fontWeight = "regular", ...textProps }) => {
+    const defaultStyles = {
         // color choices: dark,light,green,red
         color: theme.text[color],
         // fontFamily choices: light,regular,medium,bold
         fontFamily: fontWeight
     };
-    const styles = [defaultStyle, customStyle];
+    const styles = [defaultStyles, customStyles];
 
     return (
         <Text style={styles} {...textProps}>
