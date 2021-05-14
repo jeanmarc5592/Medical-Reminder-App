@@ -1,18 +1,20 @@
 import React from 'react'
-import { StyleSheet } from 'react-native';
-import { Button, withTheme } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { Screen, CustomText } from '../components';
 
 const LoginScreen = ({ navigation }) => {
 
     return (
-        <Screen>
-            <CustomText h2 fontWeight="bold">Welcome Back!</CustomText>
+        <Screen style={{ alignItems: "center" }}>
+            <CustomText h2 fontWeight="bold" style={{ marginTop: 35 }}>
+                Welcome Back!
+            </CustomText>
+            <CustomText style={{ marginTop: 15, fontSize: 18, marginBottom: 35 }}>
+                Sign in to your account
+            </CustomText>
             <Button onPress={() => navigation.navigate("Signup")} title="Sign Up!" />
         </Screen>
     )
 }
 
-const styles = StyleSheet.create({});
-
-export default withTheme(LoginScreen);
+export default LoginScreen;
