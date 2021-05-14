@@ -6,6 +6,7 @@ const Screen = ({ theme, children, style = {} }) => {
     const defaultStyles = {
       flex: 1,
       backgroundColor: theme.background.primary,
+      paddingHorizontal: 20
     };
 
     return (
