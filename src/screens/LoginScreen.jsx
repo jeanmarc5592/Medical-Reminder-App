@@ -1,13 +1,13 @@
 import React from 'react'
 import { StyleSheet } from 'react-native';
-import { Text, Button, withTheme } from 'react-native-elements';
-import { Screen } from '../components';
+import { Button, withTheme } from 'react-native-elements';
+import { Screen, CustomText } from '../components';
 
 const LoginScreen = ({ navigation }) => {
 
     return (
         <Screen>
-            <Text>LOGIN SCREEN</Text>
+            <CustomText h2 fontWeight="bold">Welcome Back!</CustomText>
             <Button onPress={() => navigation.navigate("Signup")} title="Sign Up!" />
         </Screen>
     )
