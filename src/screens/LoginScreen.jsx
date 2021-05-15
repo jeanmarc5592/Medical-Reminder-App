@@ -1,20 +1,30 @@
 import React from 'react'
-import { Button } from 'react-native-elements';
-import { Screen, CustomText } from '../components';
+import { MaterialIcons } from "@expo/vector-icons";
+import { Button, withTheme } from 'react-native-elements';
+import { Screen, CustomText, CustomInput } from '../components';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, theme }) => {
 
     return (
         <Screen style={{ alignItems: "center" }}>
-            <CustomText h2 fontWeight="bold" style={{ marginTop: 35 }}>
+            <CustomText h2 fontWeight="bold" style={{ marginTop: 50 }}>
                 Welcome Back!
             </CustomText>
-            <CustomText style={{ marginTop: 15, fontSize: 18, marginBottom: 35 }}>
+            <CustomText style={{ marginTop: 15, fontSize: 18, marginBottom: 80 }}>
                 Sign in to your account
             </CustomText>
+            <CustomInput 
+                leftIcon={<MaterialIcons name="email" size={24} color={theme.text.dark} />} 
+                placeholder="Enter your Email" 
+            />
+            <CustomInput 
+                leftIcon={<MaterialIcons name="lock" size={24} color={theme.text.dark} />} 
+                placeholder="Enter your Password" 
+                secureTextEntry
+            />
             <Button onPress={() => navigation.navigate("Signup")} title="Sign Up!" />
         </Screen>
     )
 }
 
-export default LoginScreen;
+export default withTheme(LoginScreen);
