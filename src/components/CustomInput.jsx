@@ -6,7 +6,7 @@ const CustomInput = ({ theme, inputStyle = {}, leftIconContainerStyle = {}, cont
     return (
         <Input 
             inputStyle={[{ color: theme.text.dark }, inputStyle]} 
-            containerStyle={[{ marginBottom: 20 }, containerStyle]}
+            containerStyle={[{ marginBottom: 10 }, containerStyle]}
             leftIconContainerStyle={[{ marginRight: 10 }, leftIconContainerStyle]}
             {...inputProps} 
         />

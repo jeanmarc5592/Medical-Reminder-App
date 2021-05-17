@@ -10,7 +10,7 @@ const SignupScreen = ({ navigation, theme }) => {
       <CustomText h2 fontWeight="bold" style={{ marginTop: 50 }}>
         Let's start!
       </CustomText>
-      <CustomText style={{ marginTop: 15, fontSize: 18, marginBottom: 80 }}>
+      <CustomText style={{ marginTop: 15, fontSize: 18, marginBottom: 50 }}>
         Sign up for a free account
       </CustomText>
       <CustomInput 
