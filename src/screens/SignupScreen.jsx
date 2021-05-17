@@ -2,7 +2,7 @@ import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button, withTheme } from "react-native-elements";
-import { Screen, CustomText, CustomInput } from "../components";
+import { Screen, CustomText, CustomInput, CustomButton } from "../components";
 
 const SignupScreen = ({ navigation, theme }) => {
   return (
@@ -31,7 +31,7 @@ const SignupScreen = ({ navigation, theme }) => {
         placeholder="Repeat your Password" 
         secureTextEntry
       />
-      <Button onPress={() => navigation.navigate("Login")} title="Log In!" />
+      <CustomButton onPress={() => console.log("Sign up!")} title="Sign up" />
     </Screen>
   );
 };
