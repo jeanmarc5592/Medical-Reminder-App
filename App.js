@@ -5,9 +5,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import AppLoading from "expo-app-loading";
 import { useFonts } from "@use-expo/font";
-import { LoginScreen, SignupScreen } from './src/screens';
+import { LoginScreen, SignupScreen, HomeScreen } from './src/screens';
 
-const Stack = createStackNavigator();
+// Whole Application (Auth-Flow + Main-Flow)
+const AppStack = createStackNavigator();
+
+const isLoggedIn = false;
 
 const App = () => {
   const customFonts = {
@@ -40,10 +43,16 @@ const App = () => {
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
         <NavigationContainer>
-          <Stack.Navigator headerMode={false}>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
-          </Stack.Navigator>
+          <AppStack.Navigator headerMode={false}>
+            {isLoggedIn ? (
+                <AppStack.Screen name="Home" component={HomeScreen} />
+              ) : (
+                <>
+                  <AppStack.Screen name="Login" component={LoginScreen} />
+                  <AppStack.Screen name="Signup" component={SignupScreen} />
+                </>
+            )}
+          </AppStack.Navigator>
         </NavigationContainer>
       </ThemeProvider>
     </SafeAreaProvider>
