@@ -1,6 +1,7 @@
 import React from 'react'
 import { MaterialIcons } from "@expo/vector-icons";
-import { withTheme } from 'react-native-elements';
+import { withTheme, SocialIcon } from 'react-native-elements';
+import { TouchableOpacity, View } from 'react-native';
 import { Screen, CustomText, CustomInput, CustomButton } from '../components';
 
 const LoginScreen = ({ navigation, theme }) => {
@@ -22,7 +23,27 @@ const LoginScreen = ({ navigation, theme }) => {
                 placeholder="Enter your Password" 
                 secureTextEntry
             />
-            <CustomButton onPress={() => console.log("Log in!")} title="Continue" />
+            <CustomButton containerStyle={{ marginBottom: 15 }} onPress={() => console.log("Log in!")} title="Continue" />
+            <SocialIcon 
+                title="Sign in with Google" 
+                button 
+                light 
+                type="google" 
+                style={{ borderRadius: 0, width: "100%" }} 
+                fontStyle={{ fontSize: 18, color: theme.text.dark, fontWeight: "700" }}
+                iconStyle={{ color: theme.text.dark }}
+                onPress={() => console.log("Sign in with Google")}
+            />
+            <View style={{ display: "flex", flexDirection: "row", marginTop: 40}}>
+                <CustomText>
+                    Don't have an account?&nbsp;
+                </CustomText>
+                <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+                    <CustomText style={{ textDecorationLine: "underline" }} fontWeight="bold">
+                        Sign up!
+                    </CustomText>
+                </TouchableOpacity>
+            </View>
         </Screen>
     )
 }
