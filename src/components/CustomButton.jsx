@@ -9,7 +9,7 @@ const CustomButton = ({
     titleStyle: customTitleStyle = {},
     ...buttonProps 
 }) => {
-    const defaultContainerStyles = { width: "80%" };
+    const defaultContainerStyles = { width: "100%" };
     const defaultButtonStyles = { backgroundColor: theme.background.secondary, paddingVertical: 12 };
     const defaultTitleStyles = { color: theme.text.dark, fontFamily: "bold" };
 
@@ -20,6 +20,7 @@ const CustomButton = ({
             buttonStyle={{ ...defaultButtonStyles, ...customButtonStyle }} 
             titleStyle={{ ...defaultTitleStyles, ...customTitleStyle }}
             {...buttonProps} 
+            raised
         />
     )
 }
