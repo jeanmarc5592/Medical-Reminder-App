@@ -21,7 +21,8 @@ const App = () => {
   const theme = useMemo(() => ({
     background: {
       primary: "#EFFAFF",
-      secondary: "#BCEBFE"
+      secondary: "#BCEBFE",
+      white: "#fff"
     },
     text: {
       dark: "#3E5076",
