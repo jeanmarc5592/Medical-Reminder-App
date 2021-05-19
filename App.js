@@ -28,6 +28,7 @@ const App = () => {
       primary: "#EFFAFF",
       secondary: "#BCEBFE",
       white: "#fff"
+      
     },
     text: {
       dark: "#3E5076",
