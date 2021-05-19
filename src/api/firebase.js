@@ -15,7 +15,7 @@ export const signUserUp = async (email, password, name) => {
   } 
   catch (err) {
     console.log(err.message);
-    Alert.alert("There is something wrong!!!!");
+    Alert.alert("An error occured or the Email is already registered");
   }
 };
 
@@ -25,7 +25,7 @@ export const signUserIn = async (email, password) => {
   } 
   catch (err) {
     console.log(err.message);
-    Alert.alert("There is something wrong!");
+    Alert.alert("Email or Password is wrong");
   }
 };
 
@@ -35,6 +35,6 @@ export const signUserOut = async () => {
   } 
   catch (err) {
     console.log(err.message);
-    Alert.alert("There is something wrong!");
+    Alert.alert("Something went wrong");
   }
 };

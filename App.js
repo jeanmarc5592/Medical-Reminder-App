@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { ThemeProvider } from "react-native-elements";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,9 +12,8 @@ import { LoginScreen, SignupScreen, HomeScreen } from './src/screens';
 // Whole Application (Auth-Flow + Main-Flow)
 const AppStack = createStackNavigator();
 
-const isLoggedIn = false;
-
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const customFonts = {
     light: require("./assets/fonts/Montserrat-Light.ttf"),
     regular: require("./assets/fonts/Montserrat-Regular.ttf"),
@@ -28,7 +27,7 @@ const App = () => {
       primary: "#EFFAFF",
       secondary: "#BCEBFE",
       white: "#fff"
-      
+
     },
     text: {
       dark: "#3E5076",
@@ -37,6 +36,17 @@ const App = () => {
       red: "#DA282F",
     },
   }), []);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      // TODO: Use secureStorage instead of local state setting
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+  });
 
   // Checks if Firebase is NOT called anywhere else before initialization
   if (!firebase.apps.length) {
