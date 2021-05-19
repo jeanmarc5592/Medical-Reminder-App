@@ -5,6 +5,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import AppLoading from "expo-app-loading";
 import { useFonts } from "@use-expo/font";
+import * as firebase from 'firebase';
+import firebaseConfig from './src/config/firebase';
 import { LoginScreen, SignupScreen, HomeScreen } from './src/screens';
 
 // Whole Application (Auth-Flow + Main-Flow)
@@ -34,6 +36,12 @@ const App = () => {
       red: "#DA282F",
     },
   }), []);
+
+  // Checks if Firebase is NOT called anywhere else before initialization
+  if (!firebase.apps.length) {
+    console.log("Connected with Firebase");
+    firebase.initializeApp(firebaseConfig);
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
