@@ -29,7 +29,6 @@ const SignupScreen = ({ navigation, theme }) => {
       Alert.alert("Your passwords need to match")
     } else {
       signUserUp(formState.email, formState.password, formState.name);
-      setFormState(initialState)
     }
   };
 

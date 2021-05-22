@@ -2,16 +2,12 @@ import React from 'react'
 import { signUserOut } from '../api/firebase';
 import { Screen, CustomText, CustomButton } from '../components';
 
-const HomeScreen = ({ navigation }) => {
-    const handleSignOut = () => {
-        signUserOut();
-
-    }
-
+const HomeScreen = () => {
+    
     return (
         <Screen>
             <CustomText>Hello from HomeScreen</CustomText>
-            <CustomButton title="Log Out" onPress={handleSignOut}  />
+            <CustomButton title="Log Out" onPress={signUserOut}  />
         </Screen>
     )
 }

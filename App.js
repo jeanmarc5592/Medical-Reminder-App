@@ -7,13 +7,12 @@ import AppLoading from "expo-app-loading";
 import { useFonts } from "@use-expo/font";
 import * as firebase from 'firebase';
 import firebaseConfig from './src/config/firebase';
-import { LoginScreen, SignupScreen, HomeScreen } from './src/screens';
+import { LoginScreen, SignupScreen, HomeScreen, ResolveAuthScreen } from './src/screens';
 
 // Whole Application (Auth-Flow + Main-Flow)
 const AppStack = createStackNavigator();
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const customFonts = {
     light: require("./assets/fonts/Montserrat-Light.ttf"),
     regular: require("./assets/fonts/Montserrat-Regular.ttf"),
@@ -37,25 +36,10 @@ const App = () => {
     },
   }), []);
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      // TODO: Use secureStorage instead of local state setting
-      if (user) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-  });
-
   // Checks if Firebase is NOT called anywhere else before initialization
   if (!firebase.apps.length) {
     console.log("Connected with Firebase");
     firebase.initializeApp(firebaseConfig);
-  }
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
   }
 
   return (
@@ -63,14 +47,10 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <NavigationContainer>
           <AppStack.Navigator headerMode={false}>
-            {isLoggedIn ? (
-                <AppStack.Screen name="Home" component={HomeScreen} />
-              ) : (
-                <>
-                  <AppStack.Screen name="Login" component={LoginScreen} />
-                  <AppStack.Screen name="Signup" component={SignupScreen} />
-                </>
-            )}
+            <AppStack.Screen name="ResolveAuth" component={ResolveAuthScreen} />
+            <AppStack.Screen name="Login" component={LoginScreen} />
+            <AppStack.Screen name="Signup" component={SignupScreen} />
+            <AppStack.Screen name="Home" component={HomeScreen} />
           </AppStack.Navigator>
         </NavigationContainer>
       </ThemeProvider>

@@ -20,7 +20,6 @@ const LoginScreen = ({ navigation, theme }) => {
       Alert.alert("Your Password is required");
     } else {
       signUserIn(formState.email, formState.password);
-      setFormState(initialState);
     }
   };
 
