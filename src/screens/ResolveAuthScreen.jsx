@@ -4,7 +4,7 @@ import * as firebase from 'firebase';
 import { Screen } from '../components';
 
 const ResolveAuthScreen = ({ navigation }) => {
-  // React to authentication changes and update Data Persistence in SecureStorage accordingly
+  // Check for Authentication Persistance or any other Auth Changes 
   useEffect(() => {
     const cleanup = () => {
       setTimeout(() => {
