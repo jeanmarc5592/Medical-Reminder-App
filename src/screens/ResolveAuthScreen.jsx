@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { ActivityIndicator } from 'react-native';
+import { withTheme } from 'react-native-elements';
 import * as firebase from 'firebase';
-import { Screen } from '../components';
+import { Screen, CustomText } from '../components';
 
-const ResolveAuthScreen = ({ navigation }) => {
+const ResolveAuthScreen = ({ navigation, theme }) => {
   // Check for Authentication Persistance or any other Auth Changes 
   useEffect(() => {
     const cleanup = () => {
@@ -21,10 +22,13 @@ const ResolveAuthScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <Screen>
-      <ActivityIndicator />
+    <Screen style={{ justifyContent: "center" }}>
+      <CustomText h2 fontWeight="bold" style={{ marginBottom: 20 }}>
+        Opening ...
+      </CustomText>
+      <ActivityIndicator color={theme.text.dark} size="large" />
     </Screen>
   );
 }
 
-export default ResolveAuthScreen
+export default withTheme(ResolveAuthScreen);
