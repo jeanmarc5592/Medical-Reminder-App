@@ -1,5 +1,7 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { ThemeProvider } from "react-native-elements";
+import { Provider } from 'react-redux';
+import store from './src/store';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
@@ -47,18 +49,20 @@ const App = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <ThemeProvider theme={theme}>
-        <NavigationContainer>
-          <AppStack.Navigator headerMode={false}>
-            <AppStack.Screen name="ResolveAuth" component={ResolveAuthScreen} />
-            <AppStack.Screen name="Login" component={LoginScreen} />
-            <AppStack.Screen name="Signup" component={SignupScreen} />
-            <AppStack.Screen name="Home" component={HomeScreen} />
-          </AppStack.Navigator>
-        </NavigationContainer>
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <ThemeProvider theme={theme}>
+          <NavigationContainer>
+            <AppStack.Navigator headerMode={false}>
+              <AppStack.Screen name="ResolveAuth" component={ResolveAuthScreen} />
+              <AppStack.Screen name="Login" component={LoginScreen} />
+              <AppStack.Screen name="Signup" component={SignupScreen} />
+              <AppStack.Screen name="Home" component={HomeScreen} />
+            </AppStack.Navigator>
+          </NavigationContainer>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </Provider>
   );  
 }
 
