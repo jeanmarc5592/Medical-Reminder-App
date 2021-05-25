@@ -38,3 +38,19 @@ export const signUserOut = async () => {
     Alert.alert("Something went wrong");
   }
 };
+
+
+export const getUser = async (onSuccessHandler = () => {}, onErrorHandler = () => {}) => {
+  try {
+    const currentUser = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    const currentUserData  = await db.collection("users").doc(currentUser.uid).get();
+    if (currentUserData.exists) {
+      return onSuccessHandler(currentUserData.data());
+    }
+    throw new Error();
+  } catch (error) {
+    console.log(error);
+    onErrorHandler();
+  }
+}; 
