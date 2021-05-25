@@ -42,6 +42,10 @@ const App = () => {
     firebase.initializeApp(firebaseConfig);
   }
 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
