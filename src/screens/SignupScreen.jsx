@@ -15,21 +15,30 @@ const initialState = {
 
 const SignupScreen = ({ navigation, theme }) => {
   const [formState, setFormState] = useState(initialState);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = () => {
-    if (!formState.name) {
-      Alert.alert("Your Name is required");
-    } else if (!formState.email) {
-      Alert.alert("Your Email is required");
-    } else if (!formState.password) {
-      Alert.alert("Your Password is required");
-    } else if (!formState.confirmedPassword) {
-      Alert.alert("You must confirm your password");
-    } else if (formState.password !== formState.confirmedPassword) {
-      Alert.alert("Your passwords need to match")
-    } else {
-      signUserUp(formState.email, formState.password, formState.name);
-    }
+    setIsLoading(true);
+    setTimeout(() => {
+      if (!formState.name) {
+        Alert.alert("Your Name is required");
+        setIsLoading(false);
+      } else if (!formState.email) {
+        Alert.alert("Your Email is required");
+        setIsLoading(false);
+      } else if (!formState.password) {
+        Alert.alert("Your Password is required");
+        setIsLoading(false);
+      } else if (!formState.confirmedPassword) {
+        Alert.alert("You must confirm your password");
+        setIsLoading(false);
+      } else if (formState.password !== formState.confirmedPassword) {
+        Alert.alert("Your passwords need to match");
+        setIsLoading(false);
+      } else {
+        signUserUp(formState.email, formState.password, formState.name);
+      }
+    }, 2000);
   };
 
   return (
@@ -71,7 +80,7 @@ const SignupScreen = ({ navigation, theme }) => {
         autoCapitalize="none"
         autoCorrect={false}
       />
-      <CustomButton onPress={handleSignUp} title="Sign up" />
+      <CustomButton loading={isLoading} onPress={handleSignUp} title="Sign up" />
       <View style={{ display: "flex", flexDirection: "row", marginTop: 40 }}>
         <CustomText>Already have an account?&nbsp;</CustomText>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>

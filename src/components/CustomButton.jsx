@@ -19,6 +19,7 @@ const CustomButton = ({
             containerStyle={{ ...defaultContainerStyles, ...customContainerStyle }}
             buttonStyle={{ ...defaultButtonStyles, ...customButtonStyle }} 
             titleStyle={{ ...defaultTitleStyles, ...customTitleStyle }}
+            loadingProps={{ color: theme.text.dark }}
             {...buttonProps} 
             raised
         />

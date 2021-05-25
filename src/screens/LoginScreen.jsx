@@ -12,15 +12,21 @@ const initialState = {
 
 const LoginScreen = ({ navigation, theme }) => {
   const [formState, setFormState] = useState(initialState);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignIn = () =>{
-    if (!formState.email) {
-      Alert.alert("Your Email is required");
-    } else if (!formState.password) {
-      Alert.alert("Your Password is required");
-    } else {
-      signUserIn(formState.email, formState.password);
-    }
+  const handleSignIn = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      if (!formState.email) {
+        Alert.alert("Your Email is required");
+        setIsLoading(false);
+      } else if (!formState.password) {
+        Alert.alert("Your Password is required");
+        setIsLoading(false);
+      } else {
+        signUserIn(formState.email, formState.password);
+      }
+    }, 2000);
   };
 
   return (
@@ -46,7 +52,7 @@ const LoginScreen = ({ navigation, theme }) => {
         autoCorrect={false}
         secureTextEntry
       />
-      <CustomButton containerStyle={{ marginBottom: 15, marginTop: 30 }} onPress={handleSignIn} title="Continue" />
+      <CustomButton loading={isLoading} containerStyle={{ marginBottom: 15, marginTop: 30 }} onPress={handleSignIn} title="Continue" />
       <View style={{ display: "flex", flexDirection: "row", marginTop: 40 }}>
         <CustomText>Don't have an account?&nbsp;</CustomText>
         <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
