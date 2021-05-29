@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert, View } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { signUserOut, getUser } from '../api/firebase';
-import { Screen, CustomText, CustomButton } from '../components';
+import { Screen, CustomText, CustomButton, Calendar } from '../components';
 import { setUserData } from '../actions/user';
 
 const HomeScreen = ({ navigation, theme }) => {
     const dispatch = useDispatch();
-    const { user }= useSelector(state => state);
-
+    const { user } = useSelector(state => state);
+    const date = new Date();
 
     useEffect(() => {
         const onSuccess = userData => dispatch(setUserData(userData));
@@ -33,7 +33,8 @@ const HomeScreen = ({ navigation, theme }) => {
             <CustomText style={{ color: theme.background.white, fontSize: 25 }}>{user?.name?.[0]}</CustomText>
           </View>
         </View>
-        <CustomButton title="Log Out" onPress={signUserOut} />
+        <Calendar date={date} />
+        {/* <CustomButton title="Log Out" onPress={signUserOut} /> */}
       </Screen>
     );
 }
