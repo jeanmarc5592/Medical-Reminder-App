@@ -10,6 +10,7 @@ import { useFonts } from "@use-expo/font";
 import * as firebase from 'firebase';
 import firebaseConfig from './src/config/firebase';
 import { LoginScreen, SignupScreen, HomeScreen, ResolveAuthScreen } from './src/screens';
+import { StatusBar } from 'react-native';
 
 // Whole Application (Auth-Flow + Main-Flow)
 const AppStack = createStackNavigator();
@@ -53,6 +54,7 @@ const App = () => {
     <Provider store={store}>
       <SafeAreaProvider>
         <ThemeProvider theme={theme}>
+          <StatusBar barStyle="dark-content" />
           <NavigationContainer>
             <AppStack.Navigator headerMode={false}>
               <AppStack.Screen name="ResolveAuth" component={ResolveAuthScreen} />
