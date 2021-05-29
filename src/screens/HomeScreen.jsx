@@ -9,7 +9,6 @@ import { setUserData } from '../actions/user';
 const HomeScreen = ({ navigation, theme }) => {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state);
-    const date = new Date();
 
     useEffect(() => {
         const onSuccess = userData => dispatch(setUserData(userData));
@@ -33,7 +32,7 @@ const HomeScreen = ({ navigation, theme }) => {
             <CustomText style={{ color: theme.background.white, fontSize: 25 }}>{user?.name?.[0]}</CustomText>
           </View>
         </View>
-        <Calendar date={date} />
+        <Calendar />
         {/* <CustomButton title="Log Out" onPress={signUserOut} /> */}
       </Screen>
     );
