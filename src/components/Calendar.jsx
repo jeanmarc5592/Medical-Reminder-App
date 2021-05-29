@@ -25,7 +25,7 @@ const Calendar = ({ theme }) => {
 
     return (
       <>
-        <CustomText style={{ fontSize: 18, alignSelf: "flex-start", marginTop: 15, marginBottom: 10 }} fontWeight="medium">
+        <CustomText style={{ fontSize: 18, alignSelf: "flex-start", marginTop: 25, marginBottom: 10 }} fontWeight="medium">
             {date?.toLocaleString("en-US", { month: "long", timeZone: "UTC" }).toUpperCase()}, {date?.getFullYear()}
         </CustomText>
         <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
@@ -33,6 +33,13 @@ const Calendar = ({ theme }) => {
             const isSelectedDay = weekday.id === selectedDay?.id;
             return (
               <TouchableOpacity 
+                activeOpacity={!isSelectedDay ? 0.2 : 1 }
+                onPress={() => {
+                  // Only change selected day if it's NOT selected yet
+                  if (!isSelectedDay) {
+                    dispatch(setSelectedDay(weekday))
+                  }
+                }}
                 key={weekday.formatted} 
                 style={{ backgroundColor: isSelectedDay ? theme.background.secondary : theme.background.grey , width: "12%", borderRadius: 5, alignItems: "center", paddingVertical: 10 }}
             >
