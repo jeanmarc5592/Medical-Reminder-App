@@ -27,7 +27,8 @@ const App = () => {
     background: {
       primary: "#EFFAFF",
       secondary: "#BCEBFE",
-      white: "#fff"
+      white: "#fff",
+      grey: "rgba(226, 228, 232, 0.5)"
 
     },
     text: {

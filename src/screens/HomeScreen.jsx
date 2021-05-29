@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation, theme }) => {
     return (
       <Screen>
         <View style={{ alignSelf: "flex-start", width: "100%", display: "flex", flexDirection: "row", alignItems: "center", marginTop: 15 }}>
-          <CustomText h4 fontWeight="bold">
+          <CustomText h3 fontWeight="bold">
             Hello {user?.name}!
           </CustomText>
           <View style={{ marginLeft: "auto", backgroundColor: theme.text.dark, borderRadius: "50%", height: 50, width: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>
