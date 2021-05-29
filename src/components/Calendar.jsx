@@ -16,7 +16,7 @@ const Calendar = ({ date, theme }) => {
     return (
       <>
         <CustomText style={{ fontSize: 18, alignSelf: "flex-start", marginTop: 15, marginBottom: 10 }} fontWeight="medium">
-            {date?.toLocaleString("default", { month: "long" }).toUpperCase()}, {date?.getFullYear()}
+            {date?.toLocaleString("en-US", { month: "long", timeZone: "UTC" }).toUpperCase()}, {date?.getFullYear()}
         </CustomText>
         <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
           {week.map((weekday) => {
