@@ -1,4 +1,3 @@
-import { getMonth, isToday } from 'date-fns';
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { getWeekDays } from '../utils/getWeekDays';
@@ -20,7 +19,7 @@ const Calendar = ({ date }) => {
         <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
           {week.map((weekday) => {
             return (
-              <View key={weekday.formatted}>
+              <View key={weekday.formatted} style={{ }}>
                 <CustomText>{weekday.day}</CustomText>
                 <CustomText>{weekday.formatted.toUpperCase()}</CustomText>
               </View>
