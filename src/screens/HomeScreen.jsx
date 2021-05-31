@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Alert, View } from 'react-native';
+import { Alert, View, ScrollView } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { signUserOut, getUser } from '../api/firebase';
-import { Screen, CustomText, IntakesProgress, Calendar } from '../components';
+import { Screen, CustomText, IntakesProgress, Calendar, CustomButton, IntakesList } from '../components';
 import { setUserData } from '../actions/user';
 
 const HomeScreen = ({ navigation, theme }) => {
@@ -33,7 +33,10 @@ const HomeScreen = ({ navigation, theme }) => {
           </View>
         </View>
         <Calendar />
-        <IntakesProgress />
+        <ScrollView style={{ width: "100%" }} contentContainerStyle={{ alignItems: "center" }} showsVerticalScrollIndicator={false}>
+          <IntakesProgress />
+          <IntakesList />
+        </ScrollView>
         {/* <CustomButton title="Log Out" onPress={signUserOut} /> */}
       </Screen>
     );

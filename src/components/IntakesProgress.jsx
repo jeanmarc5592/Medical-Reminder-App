@@ -8,7 +8,6 @@ const IntakesProgress = ({ theme }) => {
     return (
       <View
         style={{
-          marginTop: 35,
           backgroundColor: theme.background.lightGrey,
           width: 250,
           height: 250,
