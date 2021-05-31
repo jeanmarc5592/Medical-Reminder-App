@@ -2,6 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { withTheme } from 'react-native-elements';
 import { CheckmarkIcon, ClockIcon, CapsuleIcon } from '../icons';
+import { renderMedicineIcon } from '../utils/renderMedicineIcon';
 import CustomText from './CustomText'
 
 const Intake = ({ name, amount, type, dose, reminder, theme }) => {
@@ -19,7 +20,7 @@ const Intake = ({ name, amount, type, dose, reminder, theme }) => {
         <View style={{ marginLeft: "auto", marginRight: 10, backgroundColor: theme.background.secondary, padding: 10, borderRadius: 10 }}>
             <CustomText fontWeight="bold">{reminder}</CustomText>
         </View>
-        <CapsuleIcon />
+        {renderMedicineIcon(type)}
       </View>
     );
 }
