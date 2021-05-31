@@ -1,5 +1,3 @@
-import { isToday } from "date-fns/esm";
-
 const initialState = {
     date: new Date(),
     selectedDay: null
