@@ -11,7 +11,7 @@ const MOCK_INTAKES_LIST = [
         dose: "300mg",
         amount: 1,
         frequency: "daily",
-        reminder: "8:30 AM",
+        reminder: "08:30 AM",
         start: "09/01/2020",
         end: "02/31/2021"
     },
@@ -33,7 +33,7 @@ const MOCK_INTAKES_LIST = [
         dose: "1000mg",
         amount: 5,
         frequency: "daily",
-        reminder: "8:30 PM",
+        reminder: "08:30 PM",
         start: "09/01/2020",
         end: "02/31/2021"
     },
@@ -44,7 +44,7 @@ const MOCK_INTAKES_LIST = [
         dose: "100mg",
         amount: 1,
         frequency: "daily",
-        reminder: "9:00 PM",
+        reminder: "09:00 PM",
         start: "09/01/2020",
         end: "02/31/2021"
     }
