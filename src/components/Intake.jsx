@@ -1,21 +1,23 @@
 import React from 'react'
 import { View } from 'react-native'
+import { withTheme } from 'react-native-elements';
 import CustomText from './CustomText'
 
-const Intake = ({ name, amount, type, dose, reminder }) => {
+const Intake = ({ name, amount, type, dose, reminder, theme }) => {
+
     return (
-      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 35 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 30 }}>
         <View>
           <CustomText fontWeight="bold" style={{ fontSize: 18, marginBottom: 5 }}>{name}</CustomText>
           <CustomText>
             {amount} {type}, {dose}
           </CustomText>
         </View>
-        <View style={{ marginLeft: "auto"}}>
-            <CustomText>{reminder}</CustomText>
+        <View style={{ marginLeft: "auto", backgroundColor: theme.background.secondary, padding: 10, borderRadius: 10 }}>
+            <CustomText fontWeight="bold">{reminder}</CustomText>
         </View>
       </View>
     );
 }
 
-export default Intake
+export default withTheme(Intake);
