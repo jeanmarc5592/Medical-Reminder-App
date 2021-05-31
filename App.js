@@ -30,7 +30,8 @@ const App = () => {
       secondary: "#BCEBFE",
       white: "#fff",
       grey: "rgba(226, 228, 232, 0.5)",
-      lightGrey: "rgba(216, 216, 216, 0.2)"
+      lightGrey: "rgba(216, 216, 216, 0.2)",
+      orange: "#FFE190"
 
     },
     text: {
