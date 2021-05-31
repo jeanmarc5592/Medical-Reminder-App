@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert, View } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { signUserOut, getUser } from '../api/firebase';
-import { Screen, CustomText, CustomButton, Calendar } from '../components';
+import { Screen, CustomText, IntakesProgress, Calendar } from '../components';
 import { setUserData } from '../actions/user';
 
 const HomeScreen = ({ navigation, theme }) => {
@@ -28,11 +28,12 @@ const HomeScreen = ({ navigation, theme }) => {
           <CustomText h3 fontWeight="bold">
             Hello {user?.name}!
           </CustomText>
-          <View style={{ marginLeft: "auto", backgroundColor: theme.text.dark, borderRadius: "50%", height: 50, width: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <View style={{ marginLeft: "auto", backgroundColor: theme.text.dark, borderRadius: 50, height: 50, width: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>
             <CustomText style={{ color: theme.background.white, fontSize: 25 }}>{user?.name?.[0]}</CustomText>
           </View>
         </View>
         <Calendar />
+        <IntakesProgress />
         {/* <CustomButton title="Log Out" onPress={signUserOut} /> */}
       </Screen>
     );
