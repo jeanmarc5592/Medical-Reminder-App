@@ -25,7 +25,7 @@ const Calendar = ({ theme }) => {
 
     return (
       <>
-        <CustomText style={{ fontSize: 18, alignSelf: "flex-start", marginTop: 25, }} fontWeight="medium">
+        <CustomText style={{ fontSize: 18, alignSelf: "flex-start", marginTop: 25, marginBottom: 10 }} fontWeight="medium">
             {date?.toLocaleString("en-US", { month: "long", timeZone: "UTC" }).toUpperCase()}, {date?.getFullYear()}
         </CustomText>
         <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginBottom: 25 }}>
