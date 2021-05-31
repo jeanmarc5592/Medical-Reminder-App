@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Ellipse, G, Path } from "react-native-svg";
 
-const CheckmarGreen = props => {
+const CheckmarIcon = props => {
   return (
     <Svg xmlns="http://www.w3.org/2000/svg" width={30.184} height={30.164} viewBox="0 0 30.184 30.164" {...props}>
       <G transform="translate(0 -.168)">
@@ -12,4 +12,4 @@ const CheckmarGreen = props => {
   );
 }
 
-export default CheckmarGreen;
+export default CheckmarIcon;
