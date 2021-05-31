@@ -10,8 +10,8 @@ const IntakesProgress = ({ theme }) => {
         style={{
           marginTop: 35,
           backgroundColor: theme.background.lightGrey,
-          width: 300,
-          height: 300,
+          width: 250,
+          height: 250,
           borderRadius: 250,
           alignItems: "center",
           justifyContent: "center",
@@ -20,15 +20,15 @@ const IntakesProgress = ({ theme }) => {
         <View
           style={{
             backgroundColor: theme.background.white,
-            width: "85%",
-            height: "85%",
+            width: "90%",
+            height: "90%",
             borderRadius: 250,
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <AnimatedCircularProgress
-            size={220}
+            size={200}
             width={15}
             fill={50}
             tintColor={theme.background.secondary}
