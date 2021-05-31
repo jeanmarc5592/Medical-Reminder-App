@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { withTheme } from 'react-native-elements';
-import { CheckmarkIcon, ClockIcon, CapsuleIcon } from '../icons';
+import { CheckmarkIcon, ClockIcon } from '../icons';
 import { renderMedicineIcon } from '../utils/renderMedicineIcon';
 import CustomText from './CustomText'
 

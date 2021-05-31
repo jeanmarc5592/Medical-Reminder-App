@@ -39,6 +39,7 @@ const App = () => {
       light: "#96A5BA",
       green: "#19EDBE",
       red: "#DA282F",
+      iconLight: "#8b9ab1"
     },
   }), []);
 
