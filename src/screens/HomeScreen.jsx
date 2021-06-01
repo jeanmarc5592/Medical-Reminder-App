@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation, theme }) => {
           </View>
         </View>
         <Calendar />
-        <ScrollView style={{ width: "100%" }} contentContainerStyle={{ alignItems: "center" }} showsVerticalScrollIndicator={false}>
+        <ScrollView bounces={false} style={{ width: "100%" }} contentContainerStyle={{ alignItems: "center" }} showsVerticalScrollIndicator={false}>
           <IntakesProgress />
           <IntakesList />
         </ScrollView>
