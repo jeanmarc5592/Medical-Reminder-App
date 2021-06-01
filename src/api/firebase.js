@@ -11,6 +11,7 @@ export const signUserUp = async (email, password, name) => {
     db.collection("users").doc(currentUser.uid).set({
       email: currentUser.email,
       name,
+      reminders: []
     });
   } 
   catch (err) {
