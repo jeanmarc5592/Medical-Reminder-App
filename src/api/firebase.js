@@ -2,7 +2,7 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { Alert } from "react-native";
 
-export const signUserUp = async (email, password, name) => {
+export const signUserUp = async (email = "", password = "", name = "") => {
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     const currentUser = firebase.auth().currentUser;
@@ -20,7 +20,7 @@ export const signUserUp = async (email, password, name) => {
   }
 };
 
-export const signUserIn = async (email, password) => {
+export const signUserIn = async (email = "", password = "") => {
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password);
   } 
