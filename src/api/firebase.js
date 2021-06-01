@@ -55,3 +55,37 @@ export const getUser = async (onSuccessHandler = () => {}, onErrorHandler = () =
     onErrorHandler();
   }
 }; 
+
+export const takeMedicine = async (date = new Date(), intakeId = "", onSuccessHandler = () => {}, onErrorHandler = () => {}) => {
+  try {
+    const currentUser = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    
+    // Get reminders array for the particular user
+    let dbUser = await db.collection("users").doc(currentUser.uid).get();
+    dbUser = dbUser.data();
+    const { reminders } = dbUser;
+    
+    // Find the individual intake by it's id and add the current date
+    let updatedIntakeIndex = 0;
+    const updatedIntake = reminders.find((reminder, index) => {
+      if (reminder.id === intakeId) {
+        updatedIntakeIndex = index;
+        return reminder;
+      }
+    });
+    const isAlreadyTaken = updatedIntake.takenOn.find(takenDate => takenDate === date);
+    if (!isAlreadyTaken) {
+      updatedIntake.takenOn = [...updatedIntake.takenOn, date];
+    }
+    reminders[updatedIntakeIndex] = updatedIntake;
+
+    // Update document with the updated reminders array
+    await db.collection("users").doc(currentUser.uid).update({ reminders });
+
+    onSuccessHandler();
+  } catch (error) {
+    console.log(error);
+    onErrorHandler();
+  }
+}

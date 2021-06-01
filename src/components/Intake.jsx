@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { View, TouchableWithoutFeedback } from 'react-native'
 import { withTheme } from 'react-native-elements';
+import { takeMedicine } from '../api/firebase';
 import { CheckmarkIcon, ClockIcon } from '../icons';
 import { renderMedicineIcon } from '../utils/renderMedicineIcon';
 import CustomText from './CustomText'
+import { Alert } from 'react-native';
 
 const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
-    const { calendar } = useSelector(state => state)
-    console.log(calendar)
+    const { calendar } = useSelector(state => state);
+    const [taken, setTaken] = useState(false);
 
     const handleOnPress = () => {
-      console.log(calendar?.selectedDay?.date?.toLocaleDateString("en-US"))
+      const formattedSelectedDay = calendar?.selectedDay?.date?.toLocaleDateString("en-US");
+      takeMedicine(formattedSelectedDay, id, () => setTaken(true), () => Alert.alert("Something went wrong. Please try again!"));
     }
 
     const isAlreadyTaken = (intakeId, takenOnArray) => {
@@ -23,10 +26,14 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
       return takenOnArray?.find(date => date === calendar?.selectedDay?.date?.toLocaleDateString("en-US"))
     }
 
+    useEffect(() => {
+      setTaken(isAlreadyTaken(id, takenOn));
+    }, [])
+
     return (
       <TouchableWithoutFeedback onPress={handleOnPress}>
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 30 }}>
-          {isAlreadyTaken(id, takenOn) ? <CheckmarkIcon style={{ marginRight: 20 }} /> : <ClockIcon style={{ marginRight: 20 }} />}
+          {taken ? <CheckmarkIcon style={{ marginRight: 20 }} /> : <ClockIcon style={{ marginRight: 20 }} />}
           <View>
             <CustomText fontWeight="bold" style={{ fontSize: 18, marginBottom: 5 }}>
               {name}
