@@ -8,7 +8,7 @@ import { setUserData } from '../actions/user';
 
 const HomeScreen = ({ navigation, theme }) => {
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state);
+    const { user, calendar } = useSelector(state => state);
 
     useEffect(() => {
         const onSuccess = userData => dispatch(setUserData(userData));
@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation, theme }) => {
             )
         }
         getUser(onSuccess, showAlert)
-    }, []);
+    }, [calendar.selectedDay]);
     
     return (
       <Screen>

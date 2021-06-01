@@ -10,7 +10,7 @@ import { Alert } from 'react-native';
 
 const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
     const { calendar } = useSelector(state => state);
-    const [taken, setTaken] = useState(false);
+    const [taken, setTaken] = useState(null);
 
     const handleOnPress = () => {
       const formattedSelectedDay = calendar?.selectedDay?.date?.toLocaleDateString("en-US");
@@ -28,7 +28,7 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
 
     useEffect(() => {
       setTaken(isAlreadyTaken(id, takenOn));
-    }, [])
+    }, [calendar.selectedDay])
 
     return (
       <TouchableWithoutFeedback onPress={handleOnPress}>
