@@ -28,7 +28,7 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
 
     useEffect(() => {
       setTaken(isAlreadyTaken(id, takenOn));
-    }, [calendar.selectedDay])
+    }, [calendar?.selectedDay])
 
     return (
       <TouchableWithoutFeedback onPress={handleOnPress}>

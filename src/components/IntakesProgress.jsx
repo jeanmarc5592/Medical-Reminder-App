@@ -46,7 +46,7 @@ const IntakesProgress = ({ theme }) => {
                     <CustomText h1 fontWeight="bold" style={{ color: theme.background.secondary }}>2</CustomText>
                     <CustomText h1 fontWeight="bold" > / 4</CustomText>
                 </View>
-                <CustomText>{isToday(calendar.selectedDay.date) ? "Today" : calendar.selectedDay.date.toLocaleString("en-US", { weekday: "long" })}</CustomText>
+                <CustomText>{isToday(calendar?.selectedDay?.date) ? "Today" : calendar?.selectedDay?.date?.toLocaleString("en-US", { weekday: "long" })}</CustomText>
               </View>
             )}
           </AnimatedCircularProgress>
