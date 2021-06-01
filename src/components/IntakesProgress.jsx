@@ -1,10 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import CustomText from './CustomText';
+import isToday from 'date-fns/isToday';
 
 const IntakesProgress = ({ theme }) => {
+    const { user, calendar } = useSelector(state => state);
+
     return (
       <View
         style={{
@@ -42,7 +46,7 @@ const IntakesProgress = ({ theme }) => {
                     <CustomText h1 fontWeight="bold" style={{ color: theme.background.secondary }}>2</CustomText>
                     <CustomText h1 fontWeight="bold" > / 4</CustomText>
                 </View>
-                <CustomText>Today</CustomText>
+                <CustomText>{isToday(calendar.selectedDay.date) ? "Today" : calendar.selectedDay.date.toLocaleString("en-US", { weekday: "long" })}</CustomText>
               </View>
             )}
           </AnimatedCircularProgress>
