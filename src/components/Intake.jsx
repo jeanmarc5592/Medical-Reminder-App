@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { View, TouchableWithoutFeedback } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import { View, TouchableWithoutFeedback, Alert } from 'react-native'
 import { withTheme } from 'react-native-elements';
 import { takeMedicine } from '../api/firebase';
+import { takeNewMedicine } from '../actions/user';
 import { CheckmarkIcon, ClockIcon } from '../icons';
 import { renderMedicineIcon } from '../utils/renderMedicineIcon';
 import CustomText from './CustomText'
-import { Alert } from 'react-native';
 
 const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
     const { calendar } = useSelector(state => state);
+    const dispatch = useDispatch();
     const [taken, setTaken] = useState(null);
+
+    const setTakenStates = () => {
+      setTaken(true);
+      // Trigger the taken event globally
+      // Other components can subscribe to that global event
+      dispatch(takeNewMedicine(id));
+    }
 
     const handleOnPress = () => {
       const formattedSelectedDay = calendar?.selectedDay?.date?.toLocaleDateString("en-US");
-      takeMedicine(formattedSelectedDay, id, () => setTaken(true), () => Alert.alert("Something went wrong. Please try again!"));
+      takeMedicine(formattedSelectedDay, id, setTakenStates, () => Alert.alert("Something went wrong. Please try again!"));
     }
 
     const isAlreadyTaken = (intakeId, takenOnArray) => {

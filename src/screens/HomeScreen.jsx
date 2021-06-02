@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation, theme }) => {
             )
         }
         getUser(onSuccess, showAlert)
-    }, [calendar.selectedDay]);
+    }, [calendar?.selectedDay, user?.newMedicineTaken]);
     
     return (
       <Screen>
