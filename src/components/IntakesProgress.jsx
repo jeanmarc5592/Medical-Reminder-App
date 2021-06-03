@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 import { withTheme } from 'react-native-elements';
@@ -8,17 +8,17 @@ import isToday from 'date-fns/isToday';
 
 const IntakesProgress = ({ theme }) => {
     const { user, calendar } = useSelector(state => state);
-    const [takenToday, setTakenToday] = useState([])
+    const [takenToday, setTakenToday] = useState([]);
 
     useEffect(() => {
-      const takenMedicinesToday = []
+      const takenMedicinesToday = [];
       user?.reminders?.forEach(reminder => {
         reminder?.takenOn?.forEach(takenDate => {
           if (takenDate == calendar?.selectedDay?.date?.toLocaleDateString("en-US")) {
             takenMedicinesToday.push(takenDate);
           }
         })
-      })
+      });
       setTakenToday(takenMedicinesToday);
     }, [calendar?.selectedDay?.date, user?.reminders, user?.newMedicineTaken]);
 
@@ -46,20 +46,37 @@ const IntakesProgress = ({ theme }) => {
           <AnimatedCircularProgress
             size={200}
             width={15}
-            fill={50}
-            tintColor={theme.background.secondary}
+            fill={(takenToday.length / user?.reminders?.length) * 100}
+            tintColor={takenToday.length === user?.reminders?.length ? theme.text.green : theme.background.secondary}
             backgroundColor={theme.background.lightGrey}
             rotation={0}
             lineCap="round"
           >
             {() => (
-              <View style={{ width: "100%", height: "100%", alignItems:"center", padding: 20, justifyContent: "space-around" }}>
-                <CustomText h4 fontWeight="bold">INTAKES</CustomText>
+              <View style={{ width: "100%", height: "100%", alignItems: "center", padding: 20, justifyContent: "space-around" }}>
+                <CustomText h4 fontWeight="bold">
+                  INTAKES
+                </CustomText>
                 <View style={{ flexDirection: "row" }}>
-                    <CustomText h1 fontWeight="bold" style={{ color: theme.background.secondary }}>{takenToday.length}</CustomText>
-                    <CustomText h1 fontWeight="bold" > / {user?.reminders?.length}</CustomText>
+                  <CustomText
+                    h1
+                    fontWeight="bold"
+                    style={{ color: takenToday.length === user?.reminders?.length ? theme.text.green : theme.background.secondary }}
+                  >
+                    {takenToday.length}
+                  </CustomText>
+                  <CustomText
+                    h1
+                    fontWeight="bold"
+                    style={{ color: takenToday.length === user?.reminders?.length ? theme.text.green : theme.text.dark }}
+                  >
+                    {" "}
+                    / {user?.reminders?.length}
+                  </CustomText>
                 </View>
-                <CustomText>{isToday(calendar?.selectedDay?.date) ? "Today" : calendar?.selectedDay?.date?.toLocaleString("en-US", { weekday: "long" })}</CustomText>
+                <CustomText>
+                  {isToday(calendar?.selectedDay?.date) ? "Today" : calendar?.selectedDay?.date?.toLocaleString("en-US", { weekday: "long" })}
+                </CustomText>
               </View>
             )}
           </AnimatedCircularProgress>
