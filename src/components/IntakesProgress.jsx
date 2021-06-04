@@ -12,15 +12,19 @@ const IntakesProgress = ({ theme }) => {
 
     useEffect(() => {
       const takenMedicinesToday = [];
-      user?.reminders?.forEach(reminder => {
-        reminder?.takenOn?.forEach(takenDate => {
+      user?.reminders?.forEach((reminder) => {
+        reminder?.takenOn?.forEach((takenDate) => {
           if (takenDate == calendar?.selectedDay?.date?.toLocaleDateString("en-US")) {
             takenMedicinesToday.push(takenDate);
           }
-        })
+        });
       });
       setTakenToday(takenMedicinesToday);
-    }, [calendar?.selectedDay?.date, user?.reminders, user?.newMedicineTaken]);
+    }, [user?.newMedicineTaken, calendar?.selectedDay?.date, user?.reminders]);
+
+    const allMedicinesTaken = useMemo(() => {
+      return takenToday.length === user?.reminders?.length;
+    }, [takenToday, user?.reminders])
 
     return (
       <View
@@ -46,7 +50,7 @@ const IntakesProgress = ({ theme }) => {
           <AnimatedCircularProgress
             size={200}
             width={15}
-            fill={(takenToday.length / user?.reminders?.length) * 100}
+            fill={takenToday.length * 100 / user?.reminders?.length}
             tintColor={takenToday.length === user?.reminders?.length ? theme.text.green : theme.background.secondary}
             backgroundColor={theme.background.lightGrey}
             rotation={0}
@@ -61,14 +65,14 @@ const IntakesProgress = ({ theme }) => {
                   <CustomText
                     h1
                     fontWeight="bold"
-                    style={{ color: takenToday.length === user?.reminders?.length ? theme.text.green : theme.background.secondary }}
+                    style={{ color: allMedicinesTaken ? theme.text.green : theme.background.secondary }}
                   >
                     {takenToday.length}
                   </CustomText>
                   <CustomText
                     h1
                     fontWeight="bold"
-                    style={{ color: takenToday.length === user?.reminders?.length ? theme.text.green : theme.text.dark }}
+                    style={{ color: allMedicinesTaken ? theme.text.green : theme.text.dark }}
                   >
                     {" "}
                     / {user?.reminders?.length}
