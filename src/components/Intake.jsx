@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { View, TouchableWithoutFeedback, Alert, TouchableOpacity } from 'react-native'
 import { withTheme } from 'react-native-elements';
+import { useNavigation } from "@react-navigation/native";
 import { takeMedicine } from '../api/firebase';
 import { takeNewMedicine } from '../actions/user';
 import { pressOnIntake } from '../actions/intakes';
@@ -18,6 +19,7 @@ import CustomText from './CustomText'
 
 const PressedIntake = ({ id, name, amount, type, dose, theme, setTaken }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { calendar } = useSelector((state) => state);
 
   const setTakenStates = () => {
@@ -72,7 +74,9 @@ const PressedIntake = ({ id, name, amount, type, dose, theme, setTaken }) => {
         </View>
         {renderMedicineIcon(type)}
       </View>
-      <InfoIcon style={{ marginRight: 10 }} />
+      <TouchableOpacity style={{ marginRight: 10 }} onPress={() => navigation.navigate("Details")}>
+        <InfoIcon />
+      </TouchableOpacity>
     </View>
   );
 }

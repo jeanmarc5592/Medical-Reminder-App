@@ -9,7 +9,7 @@ import AppLoading from "expo-app-loading";
 import { useFonts } from "@use-expo/font";
 import * as firebase from 'firebase';
 import firebaseConfig from './src/config/firebase';
-import { LoginScreen, SignupScreen, HomeScreen, ResolveAuthScreen } from './src/screens';
+import { LoginScreen, SignupScreen, HomeScreen, ResolveAuthScreen, MedicineDetailsScreen } from './src/screens';
 import { StatusBar } from 'react-native';
 
 // Whole Application (Auth-Flow + Main-Flow)
@@ -64,6 +64,7 @@ const App = () => {
               <AppStack.Screen name="Login" component={LoginScreen} />
               <AppStack.Screen name="Signup" component={SignupScreen} />
               <AppStack.Screen name="Home" component={HomeScreen} />
+              <AppStack.Screen name="Details" component={MedicineDetailsScreen} />
             </AppStack.Navigator>
           </NavigationContainer>
         </ThemeProvider>
