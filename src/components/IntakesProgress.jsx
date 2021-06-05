@@ -23,7 +23,10 @@ const IntakesProgress = ({ theme }) => {
     }, [user?.newMedicineTaken, calendar?.selectedDay?.date, user?.reminders]);
 
     const allMedicinesTaken = useMemo(() => {
-      return takenToday.length === user?.reminders?.length;
+      if (takenToday.length !== 0 && user?.reminders?.length !== 0) {
+        return takenToday.length === user?.reminders?.length
+      }
+      return;
     }, [takenToday, user?.reminders])
 
     return (
