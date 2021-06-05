@@ -17,7 +17,7 @@ import CustomText from './CustomText'
   **********************************
 */
 
-const PressedIntake = ({ id, name, amount, type, dose, theme, setTaken }) => {
+const PressedIntake = ({ id, name, amount, type, dose, reminders, theme, setTaken }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { calendar } = useSelector((state) => state);
@@ -139,7 +139,17 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
       taken
     }
 
-    const handleOnPress = () => dispatch(pressOnIntake(id));
+    const storeProps = {
+      id,
+      takenOn,
+      name,
+      amount,
+      type,
+      dose,
+      reminder,
+    };
+
+    const handleOnPress = () => dispatch(pressOnIntake(storeProps));
 
     const isAlreadyTaken = (intakeId, takenOnArray) => {
       if (!intakeId || !takenOnArray) {
@@ -158,7 +168,7 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
     return (
       <TouchableWithoutFeedback onPress={handleOnPress}>
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 30 }}>
-          {intakes.pressedIntake === id && !taken ? <PressedIntake {...subComponentProps} /> : <DefaultIntake {...subComponentProps} />}
+          {intakes.pressedIntake.id === id && !taken ? <PressedIntake {...subComponentProps} /> : <DefaultIntake {...subComponentProps} />}
         </View>
       </TouchableWithoutFeedback>
     );
