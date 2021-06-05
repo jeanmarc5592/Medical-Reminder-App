@@ -11,6 +11,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
 import { editMedicine, deleteMedicine } from '../api/firebase';
 import { editIntake } from '../actions/intakes';
+import { MEDICINE_TYPES } from '../constants';
 
 const initialAddState = {
     id: uuid.v4(),
@@ -33,11 +34,7 @@ const Form = ({ theme, type = "Add" }) => {
     const [buttonDisabled, setButtonDisabled] = useState(true);
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [dropDownPickerVisible, setDropDownPickerVisible] = useState(false);
-    const [dropDownPickerItems, setDropDownPickerItems] = useState([ 
-        { label: "Capsule", value: "Capsule" },
-        { label: "Drops", value: "Drops" },
-        { label: "Tablet", value: "Tablet" }
-    ]);
+    const [dropDownPickerItems, setDropDownPickerItems] = useState(MEDICINE_TYPES);
 
     useEffect(() => {
         if (type === "Edit") {
