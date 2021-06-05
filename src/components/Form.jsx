@@ -13,17 +13,17 @@ import { editMedicine, deleteMedicine, addMedicine } from '../api/firebase';
 import { editIntake } from '../actions/intakes';
 import { MEDICINE_TYPES } from '../constants';
 
-const initialAddState = {
-    id: uuid.v4(),
-    name: "",
-    type: "",
-    dose: "",
-    amount: "",
-    reminder: "",
-    takenOn: []
-}
 
 const Form = ({ theme, type = "Add" }) => {
+    const initialAddState = {
+      id: uuid.v4(),
+      name: "",
+      type: "",
+      dose: "",
+      amount: "",
+      reminder: "",
+      takenOn: [],
+    };
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const { pressedIntake } = useSelector((state) => state.intakes);
