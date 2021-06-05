@@ -52,7 +52,7 @@ const Form = ({ theme, type = "Add" }) => {
       <ScrollView style={{ width: "100%" }} contentContainerStyle={{ paddingHorizontal: 25 }} bounces={false}>
         {/* *** NAME *** */}
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, color: theme.text.light }} fontWeight="medium">
-          Name
+          Name* (e.g. Ibuprofen)
         </CustomText>
         <CustomInput
           containerStyle={{ width: "100%", marginRight: "auto" }}
@@ -63,7 +63,7 @@ const Form = ({ theme, type = "Add" }) => {
         />
         {/* *** TYPE *** */}
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
-          Type
+          Type*
         </CustomText>
         <CustomInput
           containerStyle={{ width: "100%", marginRight: "auto" }}
@@ -74,7 +74,7 @@ const Form = ({ theme, type = "Add" }) => {
         />
         {/* *** DOSE *** */}
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
-          Dose
+          Dose* (e.g. 100mg)
         </CustomText>
         <CustomInput
           containerStyle={{ width: "100%", marginRight: "auto" }}
@@ -85,7 +85,7 @@ const Form = ({ theme, type = "Add" }) => {
         />
         {/* *** AMOUNT *** */}
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
-          Amount
+          Amount* (e.g. 3)
         </CustomText>
         <CustomInput
           containerStyle={{ width: "100%", marginRight: "auto" }}
@@ -96,7 +96,7 @@ const Form = ({ theme, type = "Add" }) => {
         />
         {/* *** REMINDER *** */}
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
-          Reminder
+          Reminder*
         </CustomText>
         <CustomInput
           containerStyle={{ width: "100%", marginRight: "auto" }}
