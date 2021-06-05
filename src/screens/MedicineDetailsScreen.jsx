@@ -22,7 +22,7 @@ const MedicineDetailsScreen = ({ navigation, theme }) => {
           {pressedIntake?.name}
         </CustomText>
         <CustomText style={{ marginBottom: 40, textAlign: "center" }}>If you'd like to edit, tap the input fields and hit the save button!</CustomText>
-        <Form />
+        <Form type="Edit" />
       </Screen>
     );
 }

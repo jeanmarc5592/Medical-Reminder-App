@@ -1,12 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { ScrollView } from 'react-native'
 import { CustomInput, CustomText, CustomButton } from '../components'
 import { withTheme } from 'react-native-elements'
 
-const Form = ({ theme }) => {
+const initialAddState = {
+    name: "",
+    type: "",
+    dose: "",
+    amount: "",
+    reminder: ""
+}
+
+const Form = ({ theme, type = "Add" }) => {
     const { pressedIntake } = useSelector((state) => state.intakes);
-    const [formState, setFormState] = useState(pressedIntake);
+    const initialState = useMemo(() => {
+      return type === "Add" ? initialAddState : pressedIntake;
+    }, []);
+    const [formState, setFormState] = useState(initialState);
+
+    const submitForm = () => {
+        if (type === "Add") {
+            /* TODO: Add uuid, takenOn Array */
+            console.log("Add to DB", formState)
+        } else if (type === "Edit") {
+            console.log("Edit Medicine", formState)
+        }
+    }
 
     return (
       <ScrollView style={{ width: "100%" }} contentContainerStyle={{ paddingHorizontal: 25 }} bounces={false}>
@@ -62,10 +82,10 @@ const Form = ({ theme }) => {
           containerStyle={{ width: "100%", marginRight: "auto" }}
           onChangeText={(name) => setFormState({ ...formState, name })}
           value={formState.reminder}
-          placeholder="Amount"
+          placeholder="Reminder"
           autoCorrect={false}
         />
-        <CustomButton title="Save Medicine" />
+        <CustomButton title="Save Medicine" onPress={submitForm} />
       </ScrollView>
     );
 }
