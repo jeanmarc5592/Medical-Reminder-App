@@ -7,6 +7,7 @@ const CustomButton = ({
     containerStyle: customContainerStyle = {},
     buttonStyle: customButtonStyle = {}, 
     titleStyle: customTitleStyle = {},
+    raised = true,
     ...buttonProps 
 }) => {
     const defaultContainerStyles = { width: "100%" };
@@ -20,8 +21,8 @@ const CustomButton = ({
             buttonStyle={{ ...defaultButtonStyles, ...customButtonStyle }} 
             titleStyle={{ ...defaultTitleStyles, ...customTitleStyle }}
             loadingProps={{ color: theme.text.dark }}
-            {...buttonProps} 
-            raised
+            {...buttonProps}
+            raised={raised}
         />
     )
 }

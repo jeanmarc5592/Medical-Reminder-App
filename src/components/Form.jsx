@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ScrollView, TouchableOpacity, Appearance, Alert } from 'react-native'
+import { ScrollView, TouchableOpacity, Appearance, Alert, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import CustomInput from './CustomInput'
 import CustomText from './CustomText'
@@ -9,7 +9,7 @@ import { withTheme } from 'react-native-elements'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
-import { editMedicine } from '../api/firebase';
+import { editMedicine, deleteMedicine } from '../api/firebase';
 import { editIntake } from '../actions/intakes';
 
 const initialAddState = {
@@ -71,6 +71,17 @@ const Form = ({ theme, type = "Add" }) => {
             const onEditFailure = () => Alert.alert("Something went wrong. Please try again");
             editMedicine(formState, onEditSuccess, onEditFailure);
         }
+    }
+
+    const onDeleteMedicine = () => {
+        const onDeleteSuccess = () => {
+          dispatch(editIntake(formState));
+          Alert.alert("Medicine deleted!", 'Your Medicine has been deleted successfully. You can return to Home by clicking on "Ok"', [
+            { text: "Ok", onPress: () => navigation.navigate("Home"), style: "cancel" },
+          ]);
+        };
+        const onDeleteFailure = () => Alert.alert("Something went wrong. Please try again");
+        deleteMedicine(formState.id, onDeleteSuccess, onDeleteFailure);
     }
 
     const handleDatePickerConfirm = date => {
@@ -188,6 +199,19 @@ const Form = ({ theme, type = "Add" }) => {
         />
         {/* *** SUBMIT BUTTON *** */}
         <CustomButton disabled={buttonDisabled} title="Save Medicine" onPress={submitForm} containerStyle={{ marginBottom: 25 }} />
+        {/* *** DELETE AREA *** */}
+        <View style={{ padding: 25, borderWidth: 2, marginBottom: 30, borderStyle: "dashed", borderColor: theme.text.red, width: "100%" }}>
+            <CustomText fontWeight="bold" color="red" h4 style={{ textAlign: "center", marginBottom: 15}}>Attention!</CustomText>
+            <CustomText color="red" style={{ textAlign: "center", marginBottom: 25 }}>Once deleted, your medicine can't be restored again!</CustomText>
+            <CustomButton 
+                onPress={onDeleteMedicine}
+                title="Delete Medicine" 
+                titleStyle={{ color: theme.text.red, fontFamily: "medium" }} 
+                type="outline" 
+                buttonStyle={{ backgroundColor: theme.background.primary, borderColor: theme.text.red, borderWidth: 1 }}  
+                raised={false}
+            />
+        </View>
       </ScrollView>
     );
 }
