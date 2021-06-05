@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Alert, View, ScrollView } from 'react-native';
 import { withTheme } from 'react-native-elements';
+import { MaterialIcons } from "@expo/vector-icons";
 import { signUserOut, getUser } from '../api/firebase';
 import { Screen, CustomText, IntakesProgress, Calendar, CustomButton, IntakesList } from '../components';
 import { setUserData } from '../actions/user';
@@ -25,9 +26,7 @@ const HomeScreen = ({ navigation, theme }) => {
     return (
       <Screen>
         <View style={{ alignSelf: "flex-start", width: "100%", display: "flex", flexDirection: "row", alignItems: "center", marginTop: 15 }}>
-          <CustomText h3 fontWeight="bold">
-            Hello {user?.name}!
-          </CustomText>
+          <MaterialIcons name="menu" size={24} color={theme.text.dark} />
           <View style={{ marginLeft: "auto", backgroundColor: theme.text.dark, borderRadius: 50, height: 50, width: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>
             <CustomText style={{ color: theme.background.white, fontSize: 25 }}>{user?.name?.[0]}</CustomText>
           </View>
