@@ -6,6 +6,7 @@ import CustomText from './CustomText'
 import CustomButton from './CustomButton'
 import { withTheme } from 'react-native-elements'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
 
 const initialAddState = {
@@ -26,6 +27,12 @@ const Form = ({ theme, type = "Add" }) => {
     const [formState, setFormState] = useState(initialState);
     const [buttonDisabled, setButtonDisabled] = useState(true);
     const [datePickerVisible, setDatePickerVisible] = useState(false);
+    const [dropDownPickerVisible, setDropDownPickerVisible] = useState(false);
+    const [dropDownPickerItems, setDropDownPickerItems] = useState([ 
+        { label: "Capsule", value: "Capsule" },
+        { label: "Drops", value: "Drops" },
+        { label: "Tablet", value: "Tablet" }
+    ]);
 
     useEffect(() => {
         if (type === "Edit") {
@@ -79,12 +86,16 @@ const Form = ({ theme, type = "Add" }) => {
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
           Type*
         </CustomText>
-        <CustomInput
-          containerStyle={{ width: "100%", marginRight: "auto" }}
-          onChangeText={(type) => setFormState({ ...formState, type })}
-          value={formState.type}
-          placeholder="Type"
-          autoCorrect={false}
+        <DropDownPicker 
+            textStyle={{ color: theme.text.dark, fontFamily: "medium", fontSize: 16 }}
+            dropDownContainerStyle={{ marginLeft: 5, backgroundColor: theme.background.primary, marginTop: 5 }}
+            style={{ marginTop: 10, marginBottom: 30, marginLeft: 5, marginRight: 8, borderColor: theme.text.dark, backgroundColor: theme.background.primary }}
+            value={formState.type}
+            setItems={setDropDownPickerItems}
+            open={dropDownPickerVisible}
+            setOpen={setDropDownPickerVisible}
+            items={dropDownPickerItems}
+            setValue={(val) => setFormState({ ...formState, type: val() })}
         />
         {/* *** DOSE *** */}
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
