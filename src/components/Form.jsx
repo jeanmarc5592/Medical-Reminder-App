@@ -112,32 +112,56 @@ const Form = ({ theme, type = "Add" }) => {
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
           Reminder*
         </CustomText>
-        <TouchableOpacity 
+        {formState.reminder ? (
+          <TouchableOpacity
             onPress={showDatePicker}
-            style={{ 
-                width: "40%", 
-                alignItems: "center", 
-                marginLeft: 8, 
-                marginTop: 10, 
-                marginBottom: 30, 
-                borderWidth: 1, 
-                borderColor: theme.text.light, 
-                borderRadius: 7, 
-                paddingVertical: 10, 
-                paddingHorizontal: 10 
+            style={{
+              width: "40%",
+              alignItems: "center",
+              marginLeft: 8,
+              marginTop: 10,
+              marginBottom: 30,
+              borderWidth: 1,
+              borderColor: theme.text.light,
+              borderRadius: 7,
+              paddingVertical: 10,
+              paddingHorizontal: 10,
             }}
-        >
-            <CustomText style={{ fontSize: 16 }} fontWeight="medium">{formState.reminder}</CustomText>
-        </TouchableOpacity>
-        <DateTimePickerModal 
-            textColor="black"
-            isDarkModeEnabled={Appearance.getColorScheme() === "dark"}
-            display="spinner"
-            isVisible={datePickerVisible} 
-            mode="time" 
-            onConfirm={handleDatePickerConfirm} 
-            onCancel={hideDatePicker}
+          >
+            <CustomText style={{ fontSize: 16 }} fontWeight="medium">
+              {formState.reminder}
+            </CustomText>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={showDatePicker}
+            style={{
+              marginLeft: 8,
+              marginTop: 10,
+              marginBottom: 30,
+              borderRadius: "50%",
+              backgroundColor: theme.background.secondary,
+              height: 45,
+              width: 45,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <CustomText h3 fontWeight="medium">
+              +
+            </CustomText>
+          </TouchableOpacity>
+        )}
+        <DateTimePickerModal
+          textColor="black"
+          isDarkModeEnabled={Appearance.getColorScheme() === "dark"}
+          display="spinner"
+          isVisible={datePickerVisible}
+          mode="time"
+          onConfirm={handleDatePickerConfirm}
+          onCancel={hideDatePicker}
         />
+        {/* *** SUBMIT BUTTON *** */}
         <CustomButton disabled={buttonDisabled} title="Save Medicine" onPress={submitForm} containerStyle={{ marginBottom: 25 }} />
       </ScrollView>
     );
