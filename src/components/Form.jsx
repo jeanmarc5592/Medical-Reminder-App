@@ -1,15 +1,18 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { ScrollView } from 'react-native'
 import { CustomInput, CustomText, CustomButton } from '../components'
 import { withTheme } from 'react-native-elements'
+import uuid from "react-native-uuid";
 
 const initialAddState = {
+    id: uuid.v4(),
     name: "",
     type: "",
     dose: "",
     amount: "",
-    reminder: ""
+    reminder: "",
+    takenOn: []
 }
 
 const Form = ({ theme, type = "Add" }) => {
@@ -18,10 +21,27 @@ const Form = ({ theme, type = "Add" }) => {
       return type === "Add" ? initialAddState : pressedIntake;
     }, []);
     const [formState, setFormState] = useState(initialState);
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+
+    useEffect(() => {
+        if (type === "Edit") {
+            // Compare the current values with the initialState and check for empty values
+            // If there have been NO updates made or there is at least one empty value, disable the button
+            // When there is at least one update and NO empty value, enable the button for the user to submit the changes
+            const comparedValues = [];
+            const emptyValues = [];
+            for (let key in formState) {
+                comparedValues.push(formState[key] === initialState[key]);
+                emptyValues.push(formState[key] === "");
+            }
+            const hasUpdatedValues = comparedValues.some((value) => value === false);
+            const hasEmptyValues = emptyValues.some((value) => value === true);
+            setButtonDisabled(!hasUpdatedValues || hasEmptyValues);
+        }
+    }, [formState]);
 
     const submitForm = () => {
         if (type === "Add") {
-            /* TODO: Add uuid, takenOn Array */
             console.log("Add to DB", formState)
         } else if (type === "Edit") {
             console.log("Edit Medicine", formState)
@@ -85,7 +105,7 @@ const Form = ({ theme, type = "Add" }) => {
           placeholder="Reminder"
           autoCorrect={false}
         />
-        <CustomButton title="Save Medicine" onPress={submitForm} />
+        <CustomButton disabled={buttonDisabled} title="Save Medicine" onPress={submitForm} />
       </ScrollView>
     );
 }
