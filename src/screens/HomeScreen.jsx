@@ -8,7 +8,7 @@ import { setUserData } from '../actions/user';
 
 const HomeScreen = ({ navigation, theme }) => {
     const dispatch = useDispatch();
-    const { user, calendar } = useSelector(state => state);
+    const { user, calendar, intakes } = useSelector(state => state);
 
     useEffect(() => {
         const onSuccess = userData => dispatch(setUserData(userData));
@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation, theme }) => {
             )
         }
         getUser(onSuccess, showAlert)
-    }, [calendar?.selectedDay, user?.newMedicineTaken]);
+    }, [calendar?.selectedDay, user?.newMedicineTaken, intakes?.editedIntake]);
     
     return (
       <Screen>
@@ -37,7 +37,7 @@ const HomeScreen = ({ navigation, theme }) => {
           <IntakesProgress />
           <IntakesList />
         </ScrollView>
-        {/* <CustomButton title="Log Out" onPress={signUserOut} /> */}
+        <CustomButton title="Log Out" onPress={signUserOut} />
       </Screen>
     );
 }

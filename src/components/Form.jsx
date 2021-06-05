@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { ScrollView, TouchableOpacity, Appearance } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import { ScrollView, TouchableOpacity, Appearance, Alert } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 import CustomInput from './CustomInput'
 import CustomText from './CustomText'
 import CustomButton from './CustomButton'
@@ -8,6 +9,8 @@ import { withTheme } from 'react-native-elements'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
+import { editMedicine } from '../api/firebase';
+import { editIntake } from '../actions/intakes';
 
 const initialAddState = {
     id: uuid.v4(),
@@ -20,6 +23,8 @@ const initialAddState = {
 }
 
 const Form = ({ theme, type = "Add" }) => {
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
     const { pressedIntake } = useSelector((state) => state.intakes);
     const initialState = useMemo(() => {
       return type === "Add" ? initialAddState : pressedIntake;
@@ -55,7 +60,16 @@ const Form = ({ theme, type = "Add" }) => {
         if (type === "Add") {
             console.log("Add to DB", formState)
         } else if (type === "Edit") {
-            console.log("Edit Medicine", formState)
+            const onEditSuccess = () => {
+                dispatch(editIntake(formState))
+                Alert.alert(
+                    'Medicine updated!',
+                    'Your Medicine has been updated successfully. You can return to Home by clicking on "Ok"',
+                    [ { text: "Ok", onPress: () => navigation.navigate("Home"), style: "cancel" } ],
+                )
+            };
+            const onEditFailure = () => Alert.alert("Something went wrong. Please try again");
+            editMedicine(formState, onEditSuccess, onEditFailure);
         }
     }
 

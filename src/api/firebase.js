@@ -89,3 +89,32 @@ export const takeMedicine = async (date = new Date(), intakeId = "", onSuccessHa
     onErrorHandler();
   }
 }
+
+export const editMedicine = async (payload = {}, onSuccessHandler = () => {}, onErrorHandler = () => {}) => {
+  try {
+    const currentUser = firebase.auth().currentUser;
+    const db = firebase.firestore();
+
+    // Get reminders array for the particular user
+    let dbUser = await db.collection("users").doc(currentUser.uid).get();
+    dbUser = dbUser.data();
+    const { reminders } = dbUser;
+
+    // Find the individual intake by it's id and add the current date
+    let updatedIntakeIndex = 0;
+    reminders.find((reminder, index) => {
+      if (reminder.id === payload.id) {
+        updatedIntakeIndex = index;
+      }
+    });
+    reminders[updatedIntakeIndex] = payload;
+
+    // Update document with the updated reminders array
+    await db.collection("users").doc(currentUser.uid).update({ reminders });
+
+    onSuccessHandler();
+  } catch (error) {
+    console.log(error);
+    onErrorHandler();
+  }
+}
