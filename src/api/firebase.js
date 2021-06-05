@@ -141,3 +141,26 @@ export const deleteMedicine = async (id = "", onSuccessHandler = () => {}, onErr
     onErrorHandler();
   }
 }
+
+export const addMedicine = async (payload = {}, onSuccessHandler = () => {}, onErrorHandler = () => {}) => {
+  try {
+    const currentUser = firebase.auth().currentUser;
+    const db = firebase.firestore();
+
+    // Get reminders array for the particular user
+    let dbUser = await db.collection("users").doc(currentUser.uid).get();
+    dbUser = dbUser.data();
+    const { reminders } = dbUser;
+
+    // Add payload object (new medicine) to reminders Array
+    const updatedReminders = reminders.concat(payload);
+
+    // Update document with the updated reminders array
+    await db.collection("users").doc(currentUser.uid).update({ reminders: updatedReminders });
+
+    onSuccessHandler();
+  } catch (error) {
+    console.log(error);
+    onErrorHandler();
+  }
+}

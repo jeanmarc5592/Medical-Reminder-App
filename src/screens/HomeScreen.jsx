@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Alert, View, ScrollView, TouchableOpacity } from 'react-native';
-import { withTheme } from 'react-native-elements';
+import { withTheme, FAB } from 'react-native-elements';
 import { MaterialIcons } from "@expo/vector-icons";
 import MenuDrawer from "react-native-side-drawer";
 import { signUserOut, getUser } from '../api/firebase';
@@ -63,6 +63,14 @@ const HomeScreen = ({ navigation, theme }) => {
             <IntakesProgress />
             <IntakesList />
           </ScrollView>
+          <FAB 
+            title="+" 
+            placement="right" 
+            color={theme.background.orange} 
+            titleStyle={{ color: theme.text.dark, fontSize: 25, fontFamily: "bold" }} 
+            buttonStyle={{ borderRadius: "50%"}} 
+            onPress={() => navigation.navigate("Add")}
+          />
         </Screen>
       </MenuDrawer>
     );

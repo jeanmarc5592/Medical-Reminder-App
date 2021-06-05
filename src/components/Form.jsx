@@ -9,7 +9,7 @@ import { withTheme } from 'react-native-elements'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
-import { editMedicine, deleteMedicine } from '../api/firebase';
+import { editMedicine, deleteMedicine, addMedicine } from '../api/firebase';
 import { editIntake } from '../actions/intakes';
 import { MEDICINE_TYPES } from '../constants';
 
@@ -37,25 +37,30 @@ const Form = ({ theme, type = "Add" }) => {
     const [dropDownPickerItems, setDropDownPickerItems] = useState(MEDICINE_TYPES);
 
     useEffect(() => {
-        if (type === "Edit") {
-            // Compare the current values with the initialState and check for empty values
-            // If there have been NO updates made or there is at least one empty value, disable the button
-            // When there is at least one update and NO empty value, enable the button for the user to submit the changes
-            const comparedValues = [];
-            const emptyValues = [];
-            for (let key in formState) {
-                comparedValues.push(formState[key] === initialState[key]);
-                emptyValues.push(formState[key] === "");
-            }
-            const hasUpdatedValues = comparedValues.some((value) => value === false);
-            const hasEmptyValues = emptyValues.some((value) => value === true);
-            setButtonDisabled(!hasUpdatedValues || hasEmptyValues);
-        }
+      // Compare the current values with the initialState and check for empty values
+      // If there have been NO updates made or there is at least one empty value, disable the button
+      // When there is at least one update and NO empty value, enable the button for the user to submit the changes
+      const comparedValues = [];
+      const emptyValues = [];
+      for (let key in formState) {
+        comparedValues.push(formState[key] === initialState[key]);
+        emptyValues.push(formState[key] === "");
+      }
+      const hasUpdatedValues = comparedValues.some((value) => value === false);
+      const hasEmptyValues = emptyValues.some((value) => value === true);
+      setButtonDisabled(!hasUpdatedValues || hasEmptyValues);
     }, [formState]);
 
     const submitForm = () => {
         if (type === "Add") {
-            console.log("Add to DB", formState)
+            const onAddSuccess = () => {
+              dispatch(editIntake(formState));
+              Alert.alert("Medicine added!", 'Your Medicine has been added successfully. You can return to Home by clicking on "Ok"', [
+                { text: "Ok", onPress: () => navigation.navigate("Home"), style: "cancel" },
+              ]);
+            };
+            const onAddFailure = () => Alert.alert("Something went wrong. Please try again");
+            addMedicine(formState, onAddSuccess, onAddFailure);
         } else if (type === "Edit") {
             const onEditSuccess = () => {
                 dispatch(editIntake(formState))
@@ -108,16 +113,23 @@ const Form = ({ theme, type = "Add" }) => {
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
           Type*
         </CustomText>
-        <DropDownPicker 
-            textStyle={{ color: theme.text.dark, fontFamily: "medium", fontSize: 16 }}
-            dropDownContainerStyle={{ marginLeft: 5, backgroundColor: theme.background.primary, marginTop: 5 }}
-            style={{ marginTop: 10, marginBottom: 30, marginLeft: 5, marginRight: 8, borderColor: theme.text.dark, backgroundColor: theme.background.primary }}
-            value={formState.type}
-            setItems={setDropDownPickerItems}
-            open={dropDownPickerVisible}
-            setOpen={setDropDownPickerVisible}
-            items={dropDownPickerItems}
-            setValue={(val) => setFormState({ ...formState, type: val() })}
+        <DropDownPicker
+          textStyle={{ color: theme.text.dark, fontFamily: "medium", fontSize: 16 }}
+          dropDownContainerStyle={{ marginLeft: 5, backgroundColor: theme.background.primary, marginTop: 5 }}
+          style={{
+            marginTop: 10,
+            marginBottom: 30,
+            marginLeft: 5,
+            marginRight: 8,
+            borderColor: theme.text.dark,
+            backgroundColor: theme.background.primary,
+          }}
+          value={formState.type}
+          setItems={setDropDownPickerItems}
+          open={dropDownPickerVisible}
+          setOpen={setDropDownPickerVisible}
+          items={dropDownPickerItems}
+          setValue={(val) => setFormState({ ...formState, type: val() })}
         />
         {/* *** DOSE *** */}
         <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
@@ -197,18 +209,24 @@ const Form = ({ theme, type = "Add" }) => {
         {/* *** SUBMIT BUTTON *** */}
         <CustomButton disabled={buttonDisabled} title="Save Medicine" onPress={submitForm} containerStyle={{ marginBottom: 25 }} />
         {/* *** DELETE AREA *** */}
-        <View style={{ padding: 25, borderWidth: 2, marginBottom: 30, borderStyle: "dashed", borderColor: theme.text.red, width: "100%" }}>
-            <CustomText fontWeight="bold" color="red" h4 style={{ textAlign: "center", marginBottom: 15}}>Attention!</CustomText>
-            <CustomText color="red" style={{ textAlign: "center", marginBottom: 25 }}>Once deleted, your medicine can't be restored again!</CustomText>
-            <CustomButton 
-                onPress={onDeleteMedicine}
-                title="Delete Medicine" 
-                titleStyle={{ color: theme.text.red, fontFamily: "medium" }} 
-                type="outline" 
-                buttonStyle={{ backgroundColor: theme.background.primary, borderColor: theme.text.red, borderWidth: 1 }}  
-                raised={false}
+        {type === "Edit" && (
+          <View style={{ padding: 25, borderWidth: 2, marginBottom: 30, borderStyle: "dashed", borderColor: theme.text.red, width: "100%" }}>
+            <CustomText fontWeight="bold" color="red" h4 style={{ textAlign: "center", marginBottom: 15 }}>
+              Attention!
+            </CustomText>
+            <CustomText color="red" style={{ textAlign: "center", marginBottom: 25 }}>
+              Once deleted, your medicine can't be restored again!
+            </CustomText>
+            <CustomButton
+              onPress={onDeleteMedicine}
+              title="Delete Medicine"
+              titleStyle={{ color: theme.text.red, fontFamily: "medium" }}
+              type="outline"
+              buttonStyle={{ backgroundColor: theme.background.primary, borderColor: theme.text.red, borderWidth: 1 }}
+              raised={false}
             />
-        </View>
+          </View>
+        )}
       </ScrollView>
     );
 }
