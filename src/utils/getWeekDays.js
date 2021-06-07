@@ -1,6 +1,13 @@
 import { addDays, format, getDate, startOfWeek } from "date-fns"
 import uuid from 'react-native-uuid';
 
+/**
+ * ********************************************************
+ * **** Get the current Weekdays from Monday to Sunday ****
+ * ********************************************************
+ * @param {Date} date - Current Date Object
+ * @returns {Array} - Current Week from Monday to Sunday
+ */
 export const getWeekDays = (date) => {
     const start = startOfWeek(date, { weekStartsOn: 1 });
 
