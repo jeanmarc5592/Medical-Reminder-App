@@ -14,7 +14,7 @@ export const renderMedicineIcon = medicineType => {
             return <CustomIcons.CapsuleIcon />
         case "Tablet":
             return <CustomIcons.TabletIcon />
-        case "Drops":
+        case "Drop":
             return <CustomIcons.DropsIcon />
         default: 
             return <></>
