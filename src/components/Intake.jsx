@@ -69,7 +69,7 @@ const PressedIntake = ({ id, name, amount, type, dose, reminders, theme, setTake
             {name}
           </CustomText>
           <CustomText>
-            {amount} {type}, {dose}
+            {amount} {`${type}${parseInt(amount) > 1 ? "s" : ""}`}, {dose}
           </CustomText>
         </View>
         {renderMedicineIcon(type)}
@@ -100,7 +100,7 @@ const DefaultIntake = ({ taken, name, amount, type, dose, reminder, theme }) => 
           {name}
         </CustomText>
         <CustomText>
-          {amount} {type}, {dose}
+          {amount} {`${type}${parseInt(amount) > 1 ? "s" : ""}`}, {dose}
         </CustomText>
       </View>
       <View style={{ marginLeft: "auto", marginRight: 10, backgroundColor: theme.background.secondary, padding: 10, borderRadius: 10 }}>

@@ -1,5 +1,5 @@
 export const MEDICINE_TYPES = [
   { label: "Capsule", value: "Capsule" },
-  { label: "Drops", value: "Drops" },
+  { label: "Drop", value: "Drop" },
   { label: "Tablet", value: "Tablet" },
 ];
