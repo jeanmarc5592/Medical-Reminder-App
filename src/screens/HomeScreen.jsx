@@ -5,9 +5,9 @@ import { withTheme, FAB } from 'react-native-elements';
 import { MaterialIcons } from "@expo/vector-icons";
 import MenuDrawer from "react-native-side-drawer";
 import { signUserOut, getUser } from '../api/firebase';
-import { Screen, CustomText, IntakesProgress, Calendar, CustomButton, IntakesList } from '../components';
+import { Screen, CustomText, IntakesProgress, Calendar, IntakesList } from '../components';
 import { setUserData } from '../actions/user';
-import { SafeAreaView } from 'react-native';
+import { pressOnIntake } from '../actions/intakes';
 
 const HomeScreen = ({ navigation, theme }) => {
     const dispatch = useDispatch();
@@ -25,6 +25,14 @@ const HomeScreen = ({ navigation, theme }) => {
         }
         getUser(onSuccess, showAlert)
     }, [calendar?.selectedDay, user?.newMedicineTaken, intakes?.editedIntake]);
+
+    useEffect(() => {
+      // Always Clear pressedIntake State when focusing HomeScreen
+      const unsubscribe = navigation.addListener("focus", () => {
+        dispatch(pressOnIntake(""))
+      });
+      return unsubscribe; 
+    })
 
     const drawerContent = () => {
     return (
