@@ -32,6 +32,7 @@ const PressedIntake = ({ id, name, amount, type, dose, reminders, theme, setTake
   const handleOnTake = () => {
     const formattedSelectedDay = calendar?.selectedDay?.date?.toLocaleDateString("en-US");
     takeMedicine(formattedSelectedDay, id, setTakenStates, () => Alert.alert("Something went wrong. Please try again!"));
+    dispatch(pressOnIntake(""))
   };
 
   return (
@@ -166,9 +167,9 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
     }, [calendar?.selectedDay])
 
     return (
-      <TouchableWithoutFeedback onPress={handleOnPress}>
+      <TouchableWithoutFeedback onLongPress={handleOnPress}>
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 30 }}>
-          {intakes.pressedIntake.id === id && !taken ? <PressedIntake {...subComponentProps} /> : <DefaultIntake {...subComponentProps} />}
+          {intakes.pressedIntake.id === id ? <PressedIntake {...subComponentProps} /> : <DefaultIntake {...subComponentProps} />}
         </View>
       </TouchableWithoutFeedback>
     );
