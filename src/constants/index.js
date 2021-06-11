@@ -5,11 +5,11 @@ export const MEDICINE_TYPES = [
 ];
 
 export const MEDICINE_DAYS = [
-  { title: "Monday", value: "Monday" },
-  { title: "Tuesday", value: "Tuesday" },
-  { title: "Wednesday", value: "Wednesday" },
-  { title: "Thursday", value: "Thursday" },
-  { title: "Friday", value: "Friday" },
-  { title: "Saturday", value: "Saturday" },
-  { title: "Sunday", value: "Sunday" },
+  { title: "Monday", value: "Mon" },
+  { title: "Tuesday", value: "Tue" },
+  { title: "Wednesday", value: "Wed" },
+  { title: "Thursday", value: "Thu" },
+  { title: "Friday", value: "Fri" },
+  { title: "Saturday", value: "Sat" },
+  { title: "Sunday", value: "Sun" },
 ];
