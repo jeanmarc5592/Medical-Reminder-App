@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { View, TouchableOpacity, Alert } from 'react-native';
+import { View, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { withTheme } from "react-native-elements";
 import { signUserUp } from '../api/firebase';
 import { Screen, CustomText, CustomInput, CustomButton } from "../components";
@@ -46,7 +46,7 @@ const SignupScreen = ({ navigation, theme }) => {
       <CustomText h2 fontWeight="bold" style={{ marginTop: 50 }}>
         Let's start!
       </CustomText>
-      <CustomText style={{ marginTop: 15, fontSize: 18, marginBottom: 50 }}>Sign up for a free account</CustomText>
+      <CustomText style={styles.subTitle}>Sign up for a free account</CustomText>
       <CustomInput
         leftIcon={<FontAwesome name="user" size={24} color={theme.text.dark} />}
         placeholder="Your Name"
@@ -81,7 +81,7 @@ const SignupScreen = ({ navigation, theme }) => {
         autoCorrect={false}
       />
       <CustomButton loading={isLoading} onPress={handleSignUp} title="Sign up" />
-      <View style={{ display: "flex", flexDirection: "row", marginTop: 40 }}>
+      <View style={styles.signInContainer}>
         <CustomText>Already have an account?&nbsp;</CustomText>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <CustomText style={{ textDecorationLine: "underline" }} fontWeight="bold">
@@ -92,5 +92,18 @@ const SignupScreen = ({ navigation, theme }) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+    subTitle: {
+      marginTop: 15,
+      fontSize: 18,
+      marginBottom: 50,
+    },
+    signInContainer: {
+      display: "flex",
+      flexDirection: "row",
+      marginTop: 40,
+    },
+  });
 
 export default withTheme(SignupScreen);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import CustomText from './CustomText';
@@ -30,26 +30,8 @@ const IntakesProgress = ({ theme }) => {
     }, [takenToday, user?.reminders])
 
     return (
-      <View
-        style={{
-          backgroundColor: theme.background.lightGrey,
-          width: 250,
-          height: 250,
-          borderRadius: 250,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: theme.background.white,
-            width: "90%",
-            height: "90%",
-            borderRadius: 250,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+      <View style={styles(theme).mainContainer}>
+        <View style={styles(theme).innerContainer}>
           <AnimatedCircularProgress
             size={200}
             width={15}
@@ -60,7 +42,7 @@ const IntakesProgress = ({ theme }) => {
             lineCap="round"
           >
             {() => (
-              <View style={{ width: "100%", height: "100%", alignItems: "center", padding: 20, justifyContent: "space-around" }}>
+              <View style={styles(theme).innerProgressContainer}>
                 <CustomText h4 fontWeight="bold">
                   INTAKES
                 </CustomText>
@@ -91,5 +73,32 @@ const IntakesProgress = ({ theme }) => {
       </View>
     );
 }
+
+const styles = (theme) =>
+  StyleSheet.create({
+    mainContainer: {
+      backgroundColor: theme.background.lightGrey,
+      width: 250,
+      height: 250,
+      borderRadius: 250,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    innerContainer: {
+      backgroundColor: theme.background.white,
+      width: "90%",
+      height: "90%",
+      borderRadius: 250,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    innerProgressContainer: {
+      width: "100%",
+      height: "100%",
+      alignItems: "center",
+      padding: 20,
+      justifyContent: "space-around",
+    },
+  });
 
 export default withTheme(IntakesProgress);

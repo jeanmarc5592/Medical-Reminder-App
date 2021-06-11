@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ScrollView, TouchableOpacity, Appearance, Alert, View } from 'react-native'
+import { ScrollView, TouchableOpacity, Appearance, Alert, View, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import CustomInput from './CustomInput'
 import CustomText from './CustomText'
@@ -99,31 +99,24 @@ const Form = ({ theme, type = "Add" }) => {
     return (
       <ScrollView style={{ width: "100%" }} contentContainerStyle={{ paddingHorizontal: 25 }} bounces={false} showsVerticalScrollIndicator={false}>
         {/* *** NAME *** */}
-        <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, color: theme.text.light }} fontWeight="medium">
+        <CustomText style={styles(theme).inputLabel} fontWeight="medium">
           Name* (e.g. Ibuprofen)
         </CustomText>
         <CustomInput
-          containerStyle={{ width: "100%", marginRight: "auto" }}
+          containerStyle={styles(theme).inputContainer}
           onChangeText={(name) => setFormState({ ...formState, name })}
           value={formState.name}
           placeholder="Name"
           autoCorrect={false}
         />
         {/* *** TYPE *** */}
-        <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
+        <CustomText style={styles(theme).inputLabel} fontWeight="medium">
           Type*
         </CustomText>
         <DropDownPicker
-          textStyle={{ color: theme.text.dark, fontFamily: "medium", fontSize: 16 }}
-          dropDownContainerStyle={{ marginLeft: 5, backgroundColor: theme.background.primary, marginTop: 5 }}
-          style={{
-            marginTop: 10,
-            marginBottom: 30,
-            marginLeft: 5,
-            marginRight: 8,
-            borderColor: theme.text.dark,
-            backgroundColor: theme.background.primary,
-          }}
+          textStyle={styles(theme).dropDownPickerText}
+          dropDownContainerStyle={styles(theme).dropDownPickerContainer}
+          style={styles(theme).dropDownPicker}
           value={formState.type}
           setItems={setDropDownPickerItems}
           open={dropDownPickerVisible}
@@ -132,66 +125,39 @@ const Form = ({ theme, type = "Add" }) => {
           setValue={(val) => setFormState({ ...formState, type: val() })}
         />
         {/* *** DOSE *** */}
-        <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
+        <CustomText style={styles(theme).inputLabel} fontWeight="medium">
           Dose* (e.g. 100mg)
         </CustomText>
         <CustomInput
-          containerStyle={{ width: "100%", marginRight: "auto" }}
+          containerStyle={styles.inputContainer}
           onChangeText={(dose) => setFormState({ ...formState, dose })}
           value={formState.dose}
           placeholder="Dose"
           autoCorrect={false}
         />
         {/* *** AMOUNT *** */}
-        <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
+        <CustomText style={styles(theme).inputLabel} fontWeight="medium">
           Amount* (e.g. 3)
         </CustomText>
         <CustomInput
-          containerStyle={{ width: "100%", marginRight: "auto" }}
+          containerStyle={styles.inputContainer}
           onChangeText={(amount) => setFormState({ ...formState, amount })}
           value={formState.amount}
           placeholder="Amount"
           autoCorrect={false}
         />
         {/* *** REMINDER *** */}
-        <CustomText style={{ fontSize: 18, width: "100%", marginLeft: 8, marginTop: 5, color: theme.text.light }} fontWeight="medium">
+        <CustomText style={styles(theme).inputLabel} fontWeight="medium">
           Reminder*
         </CustomText>
         {formState.reminder ? (
-          <TouchableOpacity
-            onPress={showDatePicker}
-            style={{
-              width: "40%",
-              alignItems: "center",
-              marginLeft: 8,
-              marginTop: 10,
-              marginBottom: 30,
-              borderWidth: 1,
-              borderColor: theme.text.light,
-              borderRadius: 7,
-              paddingVertical: 10,
-              paddingHorizontal: 10,
-            }}
-          >
+          <TouchableOpacity onPress={showDatePicker} style={styles(theme).reminder}>
             <CustomText style={{ fontSize: 16 }} fontWeight="medium">
               {formState.reminder}
             </CustomText>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            onPress={showDatePicker}
-            style={{
-              marginLeft: 8,
-              marginTop: 10,
-              marginBottom: 30,
-              borderRadius: "50%",
-              backgroundColor: theme.background.secondary,
-              height: 45,
-              width: 45,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <TouchableOpacity onPress={showDatePicker} style={styles(theme).addReminderBtn}>
             <CustomText h3 fontWeight="medium">
               +
             </CustomText>
@@ -210,19 +176,19 @@ const Form = ({ theme, type = "Add" }) => {
         <CustomButton disabled={buttonDisabled} title="Save Medicine" onPress={submitForm} containerStyle={{ marginBottom: 25 }} />
         {/* *** DELETE AREA *** */}
         {type === "Edit" && (
-          <View style={{ padding: 25, borderWidth: 2, marginBottom: 30, borderStyle: "dashed", borderColor: theme.text.red, width: "100%" }}>
-            <CustomText fontWeight="bold" color="red" h4 style={{ textAlign: "center", marginBottom: 15 }}>
+          <View style={styles(theme).deleteContainer}>
+            <CustomText fontWeight="bold" color="red" h4 style={styles(theme).deleteTitle}>
               Attention!
             </CustomText>
-            <CustomText color="red" style={{ textAlign: "center", marginBottom: 25 }}>
+            <CustomText color="red" style={styles(theme).deleteDescription}>
               Once deleted, your medicine can't be restored again!
             </CustomText>
             <CustomButton
               onPress={onDeleteMedicine}
               title="Delete Medicine"
-              titleStyle={{ color: theme.text.red, fontFamily: "medium" }}
+              titleStyle={styles(theme).deleteBtnTitle}
               type="outline"
-              buttonStyle={{ backgroundColor: theme.background.primary, borderColor: theme.text.red, borderWidth: 1 }}
+              buttonStyle={styles(theme).deleteBtn}
               raised={false}
             />
           </View>
@@ -230,5 +196,86 @@ const Form = ({ theme, type = "Add" }) => {
       </ScrollView>
     );
 }
+
+const styles = (theme) =>
+  StyleSheet.create({
+    inputLabel: {
+      fontSize: 18,
+      width: "100%",
+      marginLeft: 8,
+      marginTop: 5,
+      color: theme.text.light,
+    },
+    reminder: {
+      width: "40%",
+      alignItems: "center",
+      marginLeft: 8,
+      marginTop: 10,
+      marginBottom: 30,
+      borderWidth: 1,
+      borderRadius: 7,
+      paddingVertical: 10,
+      paddingHorizontal: 10,
+      borderColor: theme.text.light,
+    },
+    addReminderBtn: {
+      marginLeft: 8,
+      marginTop: 10,
+      marginBottom: 30,
+      borderRadius: 50,
+      height: 45,
+      width: 45,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.background.secondary,
+    },
+    inputContainer: {
+      width: "100%",
+      marginRight: "auto",
+    },
+    dropDownPicker: {
+      marginTop: 10,
+      marginBottom: 30,
+      marginLeft: 5,
+      marginRight: 8,
+      backgroundColor: theme.background.primary,
+      borderColor: theme.text.dark,
+    },
+    dropDownPickerText: {
+      fontFamily: "medium",
+      fontSize: 16,
+      color: theme.text.dark,
+    },
+    dropDownPickerContainer: {
+      marginLeft: 5,
+      marginTop: 5,
+      backgroundColor: theme.background.primary,
+    },
+    deleteContainer: {
+      padding: 25,
+      borderWidth: 2,
+      marginBottom: 30,
+      borderStyle: "dashed",
+      width: "100%",
+      borderColor: theme.text.red,
+    },
+    deleteTitle: {
+      textAlign: "center",
+      marginBottom: 15,
+    },
+    deleteDescription: {
+      textAlign: "center",
+      marginBottom: 25,
+    },
+    deleteBtnTitle: {
+      color: theme.text.red,
+      fontFamily: "medium",
+    },
+    deleteBtn: {
+      backgroundColor: theme.background.primary,
+      borderColor: theme.text.red,
+      borderWidth: 1,
+    },
+  });
 
 export default withTheme(Form);

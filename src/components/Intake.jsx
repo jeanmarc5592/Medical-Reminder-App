@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { View, TouchableWithoutFeedback, Alert, TouchableOpacity } from 'react-native'
+import { View, TouchableWithoutFeedback, Alert, TouchableOpacity, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-elements';
 import { useNavigation } from "@react-navigation/native";
 import { takeMedicine } from '../api/firebase';
@@ -36,35 +36,13 @@ const PressedIntake = ({ id, name, amount, type, dose, reminders, theme, setTake
   };
 
   return (
-    <View
-      style={{
-        backgroundColor: theme.background.secondary,
-        width: "100%",
-        borderRadius: 10,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        flexDirection: "row",
-        alignItems: "center",
-      }}
-    >
+    <View style={styles(theme).pressedIntakeContainer}>
       <TouchableOpacity onPress={handleOnTake} style={{ marginRight: "auto", marginLeft: 10 }}>
         <CustomText style={{ fontSize: 18 }} fontWeight="bold">
           TAKE
         </CustomText>
       </TouchableOpacity>
-      <View
-        style={{
-          backgroundColor: theme.background.white,
-          width: "60%",
-          borderRadius: 10,
-          paddingVertical: 10,
-          paddingHorizontal: 15,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginRight: "auto",
-        }}
-      >
+      <View style={styles(theme).pressedIntakeCenter}>
         <View>
           <CustomText fontWeight="bold" style={{ fontSize: 18, marginBottom: 5 }}>
             {name}
@@ -104,7 +82,7 @@ const DefaultIntake = ({ taken, name, amount, type, dose, reminder, theme }) => 
           {amount} {`${type}${parseInt(amount) > 1 ? "s" : ""}`}, {dose}
         </CustomText>
       </View>
-      <View style={{ marginLeft: "auto", marginRight: 10, backgroundColor: theme.background.secondary, padding: 10, borderRadius: 10 }}>
+      <View style={styles(theme).defaultIntakeReminder}>
         <CustomText fontWeight="bold">{reminder}</CustomText>
       </View>
       {renderMedicineIcon(type)}
@@ -168,11 +146,47 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, theme }) => {
 
     return (
       <TouchableWithoutFeedback onLongPress={handleOnPress}>
-        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 30 }}>
+        <View style={styles(theme).intakeContainer}>
           {intakes.pressedIntake.id === id ? <PressedIntake {...subComponentProps} /> : <DefaultIntake {...subComponentProps} />}
         </View>
       </TouchableWithoutFeedback>
     );
 }
+
+const styles = (theme) =>
+  StyleSheet.create({
+    intakeContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 30,
+    },
+    pressedIntakeContainer: {
+      backgroundColor: theme.background.secondary,
+      width: "100%",
+      borderRadius: 10,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    pressedIntakeCenter: {
+      backgroundColor: theme.background.white,
+      width: "60%",
+      borderRadius: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginRight: "auto",
+    },
+    defaultIntakeReminder: {
+      marginLeft: "auto",
+      marginRight: 10,
+      backgroundColor: theme.background.secondary,
+      padding: 10,
+      borderRadius: 10,
+    },
+  });
 
 export default withTheme(Intake);

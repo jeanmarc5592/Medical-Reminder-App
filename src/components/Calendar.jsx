@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isToday } from "date-fns";
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-elements';
 import { getWeekDays } from '../utils/getWeekDays';
 import { setSelectedDay } from '../actions/calendar';
@@ -25,10 +25,10 @@ const Calendar = ({ theme }) => {
 
     return (
       <>
-        <CustomText style={{ fontSize: 18, alignSelf: "flex-start", marginTop: 25, marginBottom: 10 }} fontWeight="medium">
+        <CustomText style={styles.yearTitle} fontWeight="medium">
             {date?.toLocaleString("en-US", { month: "long", timeZone: "UTC" }).toUpperCase()}, {date?.getFullYear()}
         </CustomText>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginBottom: 25 }}>
+        <View style={styles.weekContainer}>
           {week.map((weekday) => {
             const isSelectedDay = weekday.id === selectedDay?.id;
             return (
@@ -41,10 +41,10 @@ const Calendar = ({ theme }) => {
                   }
                 }}
                 key={weekday.formatted} 
-                style={{ backgroundColor: isSelectedDay ? theme.background.secondary : theme.background.grey , width: "12%", borderRadius: 5, alignItems: "center", paddingVertical: 10 }}
+                style={[ styles.weekDay, getBackgroundColor(theme, isSelectedDay) ]}
             >
-                <CustomText fontWeight="bold" h4 style={{ marginBottom: 5 }}>{weekday.day}</CustomText>
-                <CustomText style={{ fontSize: 12}}>{weekday.formatted.toUpperCase()}</CustomText>
+                <CustomText fontWeight="bold" h4 style={styles.weekDayIndex}>{weekday.day}</CustomText>
+                <CustomText style={styles.weekDayFormatted}>{weekday.formatted.toUpperCase()}</CustomText>
               </TouchableOpacity>
             );
           })}
@@ -52,5 +52,36 @@ const Calendar = ({ theme }) => {
       </>
     ); 
 }
+
+const styles = StyleSheet.create({
+  yearTitle: {
+    fontSize: 18,
+    alignSelf: "flex-start",
+    marginTop: 25,
+    marginBottom: 10,
+  },
+  weekContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: 25,
+  },
+  weekDay: {
+    width: "12%",
+    borderRadius: 5,
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  weekDayIndex: {
+    marginBottom: 5,
+  },
+  weekDayFormatted: {
+    fontSize: 12,
+  },
+});
+
+const getBackgroundColor = (theme, isSelectedDay) => ({
+  backgroundColor: isSelectedDay ? theme.background.secondary : theme.background.grey
+})
 
 export default withTheme(Calendar);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Alert, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { withTheme, FAB } from 'react-native-elements';
 import { MaterialIcons } from "@expo/vector-icons";
 import MenuDrawer from "react-native-side-drawer";
@@ -36,11 +36,11 @@ const HomeScreen = ({ navigation, theme }) => {
 
     const drawerContent = () => {
     return (
-      <View style={{ backgroundColor: theme.background.secondary, height: "100%", paddingTop: 75, paddingHorizontal: 25 }}>
-        <TouchableOpacity onPress={() => setDrawerOpen(false)} style={{ flexDirection: "row", alignItems: "center", padding: 15, paddingLeft: 0 }}>
-          <MaterialIcons name="close" size={30} color={theme.text.dark} style={{ marginBottom: 30, marginLeft: -4 }} />
+      <View style={styles(theme).drawerContentContainer}>
+        <TouchableOpacity onPress={() => setDrawerOpen(false)} style={styles(theme).drawerCloseButton}>
+          <MaterialIcons name="close" size={30} color={theme.text.dark} style={styles(theme).drawerCloseIcon} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={signUserOut} style={{ flexDirection: "row", alignItems: "center" }}>
+        <TouchableOpacity onPress={signUserOut} style={styles(theme).logoutButton}>
           <MaterialIcons name="logout" size={24} color={theme.text.dark} style={{ marginRight: 5 }} />
           <CustomText fontWeight="medium" style={{ fontSize: 18 }}>Logout</CustomText>
         </TouchableOpacity>
@@ -58,12 +58,12 @@ const HomeScreen = ({ navigation, theme }) => {
         drawerPercentage={85}
       >
         <Screen>
-          <View style={{ alignSelf: "flex-start", width: "100%", display: "flex", flexDirection: "row", alignItems: "center", marginTop: 15 }}>
-            <TouchableOpacity onPress={() => setDrawerOpen(true)} style={{ padding: 15, paddingLeft: 0 }}>
+          <View style={styles(theme).mainContainer}>
+            <TouchableOpacity onPress={() => setDrawerOpen(true)} style={styles(theme).openDrawerButton}>
               <MaterialIcons name="menu" size={24} color={theme.text.dark} />
             </TouchableOpacity>
-            <View style={{ marginLeft: "auto", backgroundColor: theme.text.dark, borderRadius: 50, height: 50, width: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <CustomText style={{ color: theme.background.white, fontSize: 25 }}>{user?.name?.[0]}</CustomText>
+            <View style={styles(theme).userAvatar}>
+              <CustomText style={styles(theme).userSymbol}>{user?.name?.[0]}</CustomText>
             </View>
           </View>
           <Calendar />
@@ -75,7 +75,7 @@ const HomeScreen = ({ navigation, theme }) => {
             title="+" 
             placement="right" 
             color={theme.background.orange} 
-            titleStyle={{ color: theme.text.dark, fontSize: 25, fontFamily: "bold" }} 
+            titleStyle={styles(theme).addMedicineIcon} 
             buttonStyle={{ borderRadius: "50%"}} 
             onPress={() => navigation.navigate("Add")}
           />
@@ -83,5 +83,60 @@ const HomeScreen = ({ navigation, theme }) => {
       </MenuDrawer>
     );
 }
+
+const styles = (theme) =>
+  StyleSheet.create({
+    mainContainer: {
+      alignSelf: "flex-start",
+      width: "100%",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: 15,
+    },
+    userAvatar: {
+      marginLeft: "auto",
+      backgroundColor: theme.text.dark,
+      borderRadius: 50,
+      height: 50,
+      width: 50,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    userSymbol: {
+      color: theme.background.white,
+      fontSize: 25,
+    },
+    openDrawerButton: {
+      padding: 15,
+      paddingLeft: 0,
+    },
+    drawerContentContainer: {
+      backgroundColor: theme.background.secondary,
+      height: "100%",
+      paddingTop: 75,
+      paddingHorizontal: 25,
+    },
+    drawerCloseButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      padding: 15,
+      paddingLeft: 0,
+    },
+    drawerCloseIcon: {
+      marginBottom: 30,
+      marginLeft: -4,
+    },
+    logoutButton: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    addMedicineIcon: {
+      color: theme.text.dark,
+      fontSize: 25,
+      fontFamily: "bold",
+    },
+  });
 
 export default withTheme(HomeScreen);
