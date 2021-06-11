@@ -5,13 +5,13 @@ import { useNavigation } from '@react-navigation/native';
 import CustomInput from './CustomInput'
 import CustomText from './CustomText'
 import CustomButton from './CustomButton'
-import { withTheme } from 'react-native-elements'
+import { withTheme, CheckBox } from 'react-native-elements'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
 import { editMedicine, deleteMedicine, addMedicine } from '../api/firebase';
 import { editIntake } from '../actions/intakes';
-import { MEDICINE_TYPES } from '../constants';
+import { MEDICINE_TYPES, MEDICINE_DAYS } from '../constants';
 
 
 const Form = ({ theme, type = "Add" }) => {
@@ -22,6 +22,7 @@ const Form = ({ theme, type = "Add" }) => {
       dose: "",
       amount: "",
       reminder: "",
+      reminderDays: [],
       takenOn: [],
     };
     const navigation = useNavigation();
@@ -43,8 +44,15 @@ const Form = ({ theme, type = "Add" }) => {
       const comparedValues = [];
       const emptyValues = [];
       for (let key in formState) {
-        comparedValues.push(formState[key] === initialState[key]);
-        emptyValues.push(formState[key] === "");
+        // Check for empty and not updated arrays in the formstate (except the takenOn-Array)
+        if (Array.isArray(formState[key]) && key !== "takenOn") {
+          emptyValues.push(formState[key].length === 0);
+          comparedValues.push(formState[key].sort().toString() === initialState[key].sort().toString());
+        // Check for empty and not updated strings in the formstate  
+        } else if (typeof formState[key] === "string") {
+          emptyValues.push(formState[key] === "");
+          comparedValues.push(formState[key] === initialState[key]);
+        }
       }
       const hasUpdatedValues = comparedValues.some((value) => value === false);
       const hasEmptyValues = emptyValues.some((value) => value === true);
@@ -95,6 +103,14 @@ const Form = ({ theme, type = "Add" }) => {
     const showDatePicker = () => setDatePickerVisible(true);
 
     const hideDatePicker = () => setDatePickerVisible(false);
+
+    const selectReminderDay = day => {
+      const isAdded = formState.reminderDays.findIndex(addedDay => addedDay === day) !== -1;
+      if (isAdded) {
+        return setFormState({ ...formState, reminderDays: formState.reminderDays.filter(addedDay => addedDay !== day) })
+      }
+      setFormState({ ...formState, reminderDays: formState.reminderDays.concat(day) })
+    }
 
     return (
       <ScrollView style={{ width: "100%" }} contentContainerStyle={{ paddingHorizontal: 25 }} bounces={false} showsVerticalScrollIndicator={false}>
@@ -148,7 +164,7 @@ const Form = ({ theme, type = "Add" }) => {
         />
         {/* *** REMINDER *** */}
         <CustomText style={styles(theme).inputLabel} fontWeight="medium">
-          Reminder*
+          Reminder Time*
         </CustomText>
         {formState.reminder ? (
           <TouchableOpacity onPress={showDatePicker} style={styles(theme).reminder}>
@@ -172,6 +188,20 @@ const Form = ({ theme, type = "Add" }) => {
           onConfirm={handleDatePickerConfirm}
           onCancel={hideDatePicker}
         />
+        {/* *** REMINDER *** */}
+        <CustomText style={styles(theme).inputLabel} fontWeight="medium">
+          Reminder Day*
+        </CustomText>
+        <View style={{ marginBottom: 30 }}>
+          {MEDICINE_DAYS.map((day) => (
+            <CheckBox
+              key={day.title}
+              title={day.title}
+              checked={formState.reminderDays.find((addedDay) => addedDay === day.value)}
+              onPress={() => selectReminderDay(day.value)}
+            />
+          ))}
+        </View>
         {/* *** SUBMIT BUTTON *** */}
         <CustomButton disabled={buttonDisabled} title="Save Medicine" onPress={submitForm} containerStyle={{ marginBottom: 25 }} />
         {/* *** DELETE AREA *** */}
