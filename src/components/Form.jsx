@@ -131,6 +131,8 @@ const Form = ({ theme, type = "Add" }) => {
           Type*
         </CustomText>
         <DropDownPicker
+          placeholderStyle={styles(theme).placeholderStyle}
+          arrowIconStyle={styles(theme).arrowIconStyle}
           textStyle={styles(theme).dropDownPickerText}
           dropDownContainerStyle={styles(theme).dropDownPickerContainer}
           style={styles(theme).dropDownPicker}
@@ -243,7 +245,7 @@ const styles = (theme) =>
       marginLeft: 8,
       marginTop: 5,
       color: theme.text.dark,
-      fontFamily: "bold"
+      fontFamily: "bold",
     },
     reminder: {
       width: "40%",
@@ -278,7 +280,7 @@ const styles = (theme) =>
       marginLeft: 5,
       marginRight: 8,
       backgroundColor: theme.background.primary,
-      borderColor: theme.text.dark,
+      borderColor: theme.text.light,
     },
     dropDownPickerText: {
       fontFamily: "medium",
@@ -289,6 +291,13 @@ const styles = (theme) =>
       marginLeft: 5,
       marginTop: 5,
       backgroundColor: theme.background.primary,
+      borderColor: theme.text.light,
+    },
+    arrowIconStyle: {
+      color: theme.text.light,
+    },
+    placeholderStyle: {
+      color: theme.text.light,
     },
     deleteContainer: {
       padding: 25,
