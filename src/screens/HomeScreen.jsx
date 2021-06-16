@@ -10,36 +10,36 @@ import { setUserData } from '../actions/user';
 import { pressOnIntake, setIntakesForToday } from '../actions/intakes';
 
 const HomeScreen = ({ navigation, theme }) => {
-    const dispatch = useDispatch();
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const { user, calendar, intakes } = useSelector(state => state);
+  const dispatch = useDispatch();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user, calendar, intakes } = useSelector((state) => state);
 
-    useEffect(() => {
-        const onSuccess = userData => dispatch(setUserData(userData));
-        const showAlert = () => {
-            Alert.alert(
-                'Something wrent wrong getting your data. You will be logged out safely',
-                '',
-                [ { text: "Ok", onPress: () => signUserOut(), style: "cancel" } ],
-            )
-        }
-        getUser(onSuccess, showAlert)
-    }, [calendar?.selectedDay, user?.newMedicineTaken, intakes?.editedIntake]);
+  useEffect(() => {
+    const onSuccess = (userData) => dispatch(setUserData(userData));
+    const showAlert = () => {
+      Alert.alert("Something wrent wrong getting your data. You will be logged out safely", "", [
+        { text: "Ok", onPress: () => signUserOut(), style: "cancel" },
+      ]);
+    };
+    getUser(onSuccess, showAlert);
+  }, [calendar?.selectedDay, user?.newMedicineTaken, intakes?.editedIntake]);
 
-    useEffect(() => {
-      const filteredIntakesForToday = user?.reminders?.filter((reminder) => reminder.reminderDays.includes(calendar?.selectedDay?.formatted));
-      dispatch(setIntakesForToday(filteredIntakesForToday));
-    }, [user?.reminders, calendar?.selectedDay]);
+  // Checks if the selected day (e.g. "Mon") is included in the reminders
+  // This ensures to render only the reminders that are relevant for that day
+  useEffect(() => {
+    const filteredIntakesForToday = user?.reminders?.filter((reminder) => reminder.reminderDays.includes(calendar?.selectedDay?.formatted));
+    dispatch(setIntakesForToday(filteredIntakesForToday));
+  }, [user?.reminders, calendar?.selectedDay]);
 
-    useEffect(() => {
-      // Always Clear pressedIntake State when focusing HomeScreen
-      const unsubscribe = navigation.addListener("focus", () => {
-        dispatch(pressOnIntake(""))
-      });
-      return unsubscribe; 
-    })
+  useEffect(() => {
+    // Always Clear pressedIntake State when focusing HomeScreen
+    const unsubscribe = navigation.addListener("focus", () => {
+      dispatch(pressOnIntake(""));
+    });
+    return unsubscribe;
+  });
 
-    const drawerContent = () => {
+  const drawerContent = () => {
     return (
       <View style={styles(theme).drawerContentContainer}>
         <TouchableOpacity onPress={() => setDrawerOpen(false)} style={styles(theme).drawerCloseButton}>
@@ -47,46 +47,41 @@ const HomeScreen = ({ navigation, theme }) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={signUserOut} style={styles(theme).logoutButton}>
           <MaterialIcons name="logout" size={24} color={theme.text.dark} style={{ marginRight: 5 }} />
-          <CustomText fontWeight="medium" style={{ fontSize: 18 }}>Logout</CustomText>
+          <CustomText fontWeight="medium" style={{ fontSize: 18 }}>
+            Logout
+          </CustomText>
         </TouchableOpacity>
       </View>
     );
   };
-    
-    return (
-      <MenuDrawer 
-        open={drawerOpen} 
-        drawerContent={drawerContent()} 
-        opacity={0.2}
-        animationTime={250}
-        overlay
-        drawerPercentage={85}
-      >
-        <Screen>
-          <View style={styles(theme).mainContainer}>
-            <TouchableOpacity onPress={() => setDrawerOpen(true)} style={styles(theme).openDrawerButton}>
-              <MaterialIcons name="menu" size={24} color={theme.text.dark} />
-            </TouchableOpacity>
-            <View style={styles(theme).userAvatar}>
-              <CustomText style={styles(theme).userSymbol}>{user?.name?.[0]}</CustomText>
-            </View>
+
+  return (
+    <MenuDrawer open={drawerOpen} drawerContent={drawerContent()} opacity={0.2} animationTime={250} overlay drawerPercentage={85}>
+      <Screen>
+        <View style={styles(theme).mainContainer}>
+          <TouchableOpacity onPress={() => setDrawerOpen(true)} style={styles(theme).openDrawerButton}>
+            <MaterialIcons name="menu" size={24} color={theme.text.dark} />
+          </TouchableOpacity>
+          <View style={styles(theme).userAvatar}>
+            <CustomText style={styles(theme).userSymbol}>{user?.name?.[0]}</CustomText>
           </View>
-          <Calendar />
-          <ScrollView bounces={false} style={{ width: "100%" }} contentContainerStyle={{ alignItems: "center" }} showsVerticalScrollIndicator={false}>
-            <IntakesProgress />
-            <IntakesList />
-          </ScrollView>
-          <FAB 
-            title="+" 
-            placement="right" 
-            color={theme.background.orange} 
-            titleStyle={styles(theme).addMedicineIcon} 
-            buttonStyle={{ borderRadius: "50%"}} 
-            onPress={() => navigation.navigate("Add")}
-          />
-        </Screen>
-      </MenuDrawer>
-    );
+        </View>
+        <Calendar />
+        <ScrollView bounces={false} style={{ width: "100%" }} contentContainerStyle={{ alignItems: "center" }} showsVerticalScrollIndicator={false}>
+          <IntakesProgress />
+          <IntakesList />
+        </ScrollView>
+        <FAB
+          title="+"
+          placement="right"
+          color={theme.background.orange}
+          titleStyle={styles(theme).addMedicineIcon}
+          buttonStyle={{ borderRadius: "50%" }}
+          onPress={() => navigation.navigate("Add")}
+        />
+      </Screen>
+    </MenuDrawer>
+  );
 }
 
 const styles = (theme) =>
