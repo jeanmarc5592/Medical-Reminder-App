@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { View, TouchableWithoutFeedback, Alert, TouchableOpacity, StyleSheet } from 'react-native'
 import { withTheme } from 'react-native-elements';
 import { useNavigation } from "@react-navigation/native";
+import * as Haptics from "expo-haptics";
 import { takeMedicine } from '../api/firebase';
 import { takeNewMedicine } from '../actions/user';
 import { pressOnIntake } from '../actions/intakes';
@@ -32,7 +33,8 @@ const PressedIntake = ({ id, name, amount, type, dose, reminders, theme, setTake
   const handleOnTake = () => {
     const formattedSelectedDay = calendar?.selectedDay?.date?.toLocaleDateString("en-US");
     takeMedicine(formattedSelectedDay, id, setTakenStates, () => Alert.alert("Something went wrong. Please try again!"));
-    dispatch(pressOnIntake(""))
+    dispatch(pressOnIntake(""));
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   return (
@@ -130,7 +132,10 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, reminderDays,
       reminderDays
     };
 
-    const handleOnPress = () => dispatch(pressOnIntake(storeProps));
+    const handleOnPress = () => {
+      dispatch(pressOnIntake(storeProps));
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    };
 
     const isAlreadyTaken = (intakeId, takenOnArray) => {
       if (!intakeId || !takenOnArray) {
