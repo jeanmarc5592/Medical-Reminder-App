@@ -12,7 +12,7 @@ const IntakesProgress = ({ theme }) => {
 
     useEffect(() => {
       const takenMedicinesToday = [];
-      user?.reminders?.forEach((reminder) => {
+      intakes?.intakesForToday?.forEach((reminder) => {
         reminder?.takenOn?.forEach((takenDate) => {
           if (takenDate == calendar?.selectedDay?.date?.toLocaleDateString("en-US")) {
             takenMedicinesToday.push(takenDate);
@@ -20,14 +20,14 @@ const IntakesProgress = ({ theme }) => {
         });
       });
       setTakenToday(takenMedicinesToday);
-    }, [user?.newMedicineTaken, calendar?.selectedDay?.date, user?.reminders]);
+    }, [user?.newMedicineTaken, calendar?.selectedDay?.date, intakes?.intakesForToday]);
 
     const allMedicinesTaken = useMemo(() => {
-      if (takenToday.length !== 0 && user?.reminders?.length !== 0) {
-        return takenToday.length === user?.reminders?.length
+      if (takenToday.length !== 0 && intakes?.intakesForToday?.length !== 0) {
+        return takenToday.length === intakes?.intakesForToday?.length
       }
       return;
-    }, [takenToday, user?.reminders])
+    }, [takenToday, intakes?.intakesForToday])
 
     return (
       <View style={styles(theme).mainContainer}>
@@ -35,8 +35,8 @@ const IntakesProgress = ({ theme }) => {
           <AnimatedCircularProgress
             size={200}
             width={15}
-            fill={takenToday.length * 100 / user?.reminders?.length}
-            tintColor={takenToday.length === user?.reminders?.length ? theme.text.green : theme.background.secondary}
+            fill={takenToday.length * 100 / intakes?.intakesForToday?.length}
+            tintColor={takenToday.length === intakes?.intakesForToday?.length ? theme.text.green : theme.background.secondary}
             backgroundColor={theme.background.lightGrey}
             rotation={0}
             lineCap="round"
