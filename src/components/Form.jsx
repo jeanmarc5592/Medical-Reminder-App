@@ -200,16 +200,16 @@ const Form = ({ theme, type = "Add" }) => {
             const isChecked = formState.reminderDays.find((addedDay) => addedDay === day.value);
             return (
               <CheckBox
-                containerStyle={{ backgroundColor: "transparent", borderColor: "transparent", paddingLeft: 0 }}
+                containerStyle={styles(theme).checkBoxContainerStyle}
                 uncheckedColor={isChecked ? theme.text.dark : theme.text.light}
-                textStyle={{ color: isChecked ? theme.text.dark : theme.text.light, fontFamily: isChecked ? "medium" : "regular", fontSize: 16 }}
+                textStyle={styles(theme, isChecked).checkBoxTextStyle}
                 checkedIcon={<CheckmarkIcon />}
                 key={day.title}
                 title={day.title}
                 checked={isChecked}
                 onPress={() => selectReminderDay(day.value)}
               />
-            )
+            );
           })}
         </View>
         {/* *** SUBMIT BUTTON *** */}
@@ -237,7 +237,7 @@ const Form = ({ theme, type = "Add" }) => {
     );
 }
 
-const styles = (theme) =>
+const styles = (theme, isChecked = false) =>
   StyleSheet.create({
     inputLabel: {
       fontSize: 18,
@@ -323,6 +323,16 @@ const styles = (theme) =>
       backgroundColor: theme.background.primary,
       borderColor: theme.text.red,
       borderWidth: 1,
+    },
+    checkBoxContainerStyle: {
+      backgroundColor: "transparent",
+      borderColor: "transparent",
+      paddingLeft: 0,
+    },
+    checkBoxTextStyle: {
+      color: isChecked ? theme.text.dark : theme.text.light,
+      fontFamily: isChecked ? "medium" : "regular",
+      fontSize: 16,
     },
   });
 
