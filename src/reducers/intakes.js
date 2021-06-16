@@ -1,6 +1,7 @@
 const initialState = {
     pressedIntake: "",
-    editedIntake: ""
+    editedIntake: "", 
+    intakesForToday: []
 }
 
 const intakesReducer = (state = initialState, action) => {
@@ -14,6 +15,11 @@ const intakesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 editedIntake: action.payload
+            }
+        case "SET_INTAKES_FOR_TODAY":
+            return {
+                ...state,
+                intakesForToday: action.payload
             }
         default:
             return state

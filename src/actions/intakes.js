@@ -34,3 +34,17 @@ export const editIntake = intake => ({
   type: "EDIT_INTAKE",
   payload: intake,
 });
+
+
+
+/**
+ * ***********************************************
+ * **** Sets the individual intakes for today ****
+ * ***********************************************
+ * @param {Array} intakesForToday - Pre-filtered Intakes for today
+ * @returns {Action} - Action Object
+ */
+export const setIntakesForToday = intakesForToday => ({
+  type: "SET_INTAKES_FOR_TODAY",
+  payload: intakesForToday,
+});

@@ -7,7 +7,7 @@ import CustomText from './CustomText';
 import isToday from 'date-fns/isToday';
 
 const IntakesProgress = ({ theme }) => {
-    const { user, calendar } = useSelector(state => state);
+    const { user, calendar, intakes } = useSelector(state => state);
     const [takenToday, setTakenToday] = useState([]);
 
     useEffect(() => {
@@ -60,7 +60,7 @@ const IntakesProgress = ({ theme }) => {
                     style={{ color: allMedicinesTaken ? theme.text.green : theme.text.dark }}
                   >
                     {" "}
-                    / {user?.reminders?.length}
+                    / {intakes?.intakesForToday?.length}
                   </CustomText>
                 </View>
                 <CustomText>

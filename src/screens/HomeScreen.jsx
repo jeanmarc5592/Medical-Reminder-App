@@ -7,7 +7,7 @@ import MenuDrawer from "react-native-side-drawer";
 import { signUserOut, getUser } from '../api/firebase';
 import { Screen, CustomText, IntakesProgress, Calendar, IntakesList } from '../components';
 import { setUserData } from '../actions/user';
-import { pressOnIntake } from '../actions/intakes';
+import { pressOnIntake, setIntakesForToday } from '../actions/intakes';
 
 const HomeScreen = ({ navigation, theme }) => {
     const dispatch = useDispatch();
@@ -25,6 +25,11 @@ const HomeScreen = ({ navigation, theme }) => {
         }
         getUser(onSuccess, showAlert)
     }, [calendar?.selectedDay, user?.newMedicineTaken, intakes?.editedIntake]);
+
+    useEffect(() => {
+      const filteredIntakesForToday = user?.reminders?.filter((reminder) => reminder.reminderDays.includes(calendar?.selectedDay?.formatted));
+      dispatch(setIntakesForToday(filteredIntakesForToday));
+    }, [user?.reminders, calendar?.selectedDay]);
 
     useEffect(() => {
       // Always Clear pressedIntake State when focusing HomeScreen
