@@ -242,7 +242,8 @@ const styles = (theme) =>
       width: "100%",
       marginLeft: 8,
       marginTop: 5,
-      color: theme.text.light,
+      color: theme.text.dark,
+      fontFamily: "bold"
     },
     reminder: {
       width: "40%",
