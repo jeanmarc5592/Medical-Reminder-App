@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { ScrollView, TouchableOpacity, Appearance, Alert, View, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +12,7 @@ import uuid from "react-native-uuid";
 import { editMedicine, deleteMedicine, addMedicine } from '../api/firebase';
 import { editIntake } from '../actions/intakes';
 import { MEDICINE_TYPES, MEDICINE_DAYS } from '../constants';
+import { CheckmarkIcon } from '../icons';
 
 
 const Form = ({ theme, type = "Add" }) => {
@@ -162,7 +163,7 @@ const Form = ({ theme, type = "Add" }) => {
           placeholder="Amount"
           autoCorrect={false}
         />
-        {/* *** REMINDER *** */}
+        {/* *** REMINDER TIME *** */}
         <CustomText style={styles(theme).inputLabel} fontWeight="medium">
           Reminder Time*
         </CustomText>
@@ -188,19 +189,26 @@ const Form = ({ theme, type = "Add" }) => {
           onConfirm={handleDatePickerConfirm}
           onCancel={hideDatePicker}
         />
-        {/* *** REMINDER *** */}
+        {/* *** REMINDER DAY *** */}
         <CustomText style={styles(theme).inputLabel} fontWeight="medium">
           Reminder Day*
         </CustomText>
         <View style={{ marginBottom: 30 }}>
-          {MEDICINE_DAYS.map((day) => (
-            <CheckBox
-              key={day.title}
-              title={day.title}
-              checked={formState.reminderDays.find((addedDay) => addedDay === day.value)}
-              onPress={() => selectReminderDay(day.value)}
-            />
-          ))}
+          {MEDICINE_DAYS.map((day) => {
+            const isChecked = formState.reminderDays.find((addedDay) => addedDay === day.value);
+            return (
+              <CheckBox
+                containerStyle={{ backgroundColor: "transparent", borderColor: "transparent", paddingLeft: 0 }}
+                uncheckedColor={isChecked ? theme.text.dark : theme.text.light}
+                textStyle={{ color: isChecked ? theme.text.dark : theme.text.light, fontFamily: isChecked ? "medium" : "regular", fontSize: 16 }}
+                checkedIcon={<CheckmarkIcon />}
+                key={day.title}
+                title={day.title}
+                checked={isChecked}
+                onPress={() => selectReminderDay(day.value)}
+              />
+            )
+          })}
         </View>
         {/* *** SUBMIT BUTTON *** */}
         <CustomButton disabled={buttonDisabled} title="Save Medicine" onPress={submitForm} containerStyle={{ marginBottom: 25 }} />
