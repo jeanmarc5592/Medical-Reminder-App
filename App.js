@@ -10,12 +10,14 @@ import { useFonts } from "@use-expo/font";
 import * as firebase from 'firebase';
 import firebaseConfig from './src/config/firebase';
 import { LoginScreen, SignupScreen, HomeScreen, ResolveAuthScreen, MedicineDetailsScreen, AddMedicineScreen } from './src/screens';
-import { StatusBar } from 'react-native';
+import { StatusBar, LogBox } from 'react-native';
+
 
 // Whole Application (Auth-Flow + Main-Flow)
 const AppStack = createStackNavigator();
 
 const App = () => {
+  LogBox.ignoreLogs(['Setting a timer']);
   const customFonts = {
     light: require("./assets/fonts/Montserrat-Light.ttf"),
     regular: require("./assets/fonts/Montserrat-Regular.ttf"),
