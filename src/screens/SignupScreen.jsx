@@ -36,7 +36,7 @@ const SignupScreen = ({ navigation, theme }) => {
         Alert.alert("Your passwords need to match");
         setIsLoading(false);
       } else {
-        signUserUp(formState.email, formState.password, formState.name);
+        signUserUp(formState.email, formState.password, formState.name, setIsLoading(false));
       }
     }, 2000);
   };

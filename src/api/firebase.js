@@ -9,10 +9,11 @@ import { Alert } from "react-native";
  * @param {String} email - User's email adress
  * @param {String} password - User's password
  * @param {String} name - User's name
+ * @param {Function} onErrorHandler - Function that runs when something went wrong signing the user up
  * @returns {Void} - Nothing
  * @throws {String} - Error message if something went wrong with signing the user up
  */
-export const signUserUp = async (email = "", password = "", name = "") => {
+export const signUserUp = async (email = "", password = "", name = "", onErrorHandler = () => {}) => {
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     const currentUser = firebase.auth().currentUser;
@@ -27,6 +28,7 @@ export const signUserUp = async (email = "", password = "", name = "") => {
   catch (err) {
     console.log(err.message);
     Alert.alert("An error occured or the Email is already registered");
+    onErrorHandler();
   }
 };
 
@@ -37,16 +39,18 @@ export const signUserUp = async (email = "", password = "", name = "") => {
  * ***************************
  * @param {String} email - User's email adress
  * @param {String} password - User's password
+ * @param {Function} onErrorHandler - Function that runs when something went wrong signing the user in
  * @returns {Void} - Nothing
  * @throws {String} - Error message if something went wrong signing the user in
  */
-export const signUserIn = async (email = "", password = "") => {
+export const signUserIn = async (email = "", password = "", onErrorHandler = () => {}) => {
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password);
   } 
   catch (err) {
     console.log(err.message);
     Alert.alert("Email or Password is wrong");
+    onErrorHandler();
   }
 };
 
