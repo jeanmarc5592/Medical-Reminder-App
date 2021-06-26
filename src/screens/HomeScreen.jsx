@@ -76,7 +76,7 @@ const HomeScreen = ({ navigation, theme }) => {
           placement="right"
           color={theme.background.orange}
           titleStyle={styles(theme).addMedicineIcon}
-          buttonStyle={{ borderRadius: "50%" }}
+          buttonStyle={{ borderRadius: 50 }}
           onPress={() => navigation.navigate("Add")}
         />
       </Screen>
