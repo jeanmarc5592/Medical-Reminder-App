@@ -1,7 +1,9 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ScrollView, TouchableOpacity, Appearance, Alert, View, StyleSheet } from 'react-native'
+import { ScrollView, TouchableOpacity, Appearance, Alert, View, StyleSheet, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import { format } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 import CustomInput from './CustomInput'
 import CustomText from './CustomText'
 import CustomButton from './CustomButton'
@@ -96,7 +98,10 @@ const Form = ({ theme, type = "Add" }) => {
     }
 
     const handleDatePickerConfirm = date => {
-        const formattedTimeString = date?.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit", formatMatcher: "basic" });
+        const formattedTimeString =
+          Platform.OS === "ios"
+            ? date?.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit", formatMatcher: "basic" })
+            : format(date, "hh:mm aaaaa'm'", { locale: enUS }).toUpperCase();
         setFormState({ ...formState, reminder: formattedTimeString });
         hideDatePicker();
     }

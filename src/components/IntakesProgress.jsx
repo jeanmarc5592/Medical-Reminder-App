@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { withTheme } from 'react-native-elements';
+import { isToday, format } from "date-fns";
+import { enUS } from "date-fns/locale";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import CustomText from './CustomText';
-import isToday from 'date-fns/isToday';
 
 const IntakesProgress = ({ theme }) => {
     const { user, calendar, intakes } = useSelector(state => state);
@@ -35,7 +36,7 @@ const IntakesProgress = ({ theme }) => {
           <AnimatedCircularProgress
             size={200}
             width={15}
-            fill={takenToday.length * 100 / intakes?.intakesForToday?.length}
+            fill={(takenToday.length * 100) / intakes?.intakesForToday?.length}
             tintColor={takenToday.length === intakes?.intakesForToday?.length ? theme.text.green : theme.background.secondary}
             backgroundColor={theme.background.lightGrey}
             rotation={0}
@@ -47,24 +48,20 @@ const IntakesProgress = ({ theme }) => {
                   INTAKES
                 </CustomText>
                 <View style={{ flexDirection: "row" }}>
-                  <CustomText
-                    h1
-                    fontWeight="bold"
-                    style={{ color: allMedicinesTaken ? theme.text.green : theme.background.secondary }}
-                  >
+                  <CustomText h1 fontWeight="bold" style={{ color: allMedicinesTaken ? theme.text.green : theme.background.secondary }}>
                     {takenToday.length}
                   </CustomText>
-                  <CustomText
-                    h1
-                    fontWeight="bold"
-                    style={{ color: allMedicinesTaken ? theme.text.green : theme.text.dark }}
-                  >
+                  <CustomText h1 fontWeight="bold" style={{ color: allMedicinesTaken ? theme.text.green : theme.text.dark }}>
                     {" "}
                     / {intakes?.intakesForToday?.length}
                   </CustomText>
                 </View>
                 <CustomText>
-                  {isToday(calendar?.selectedDay?.date) ? "Today" : calendar?.selectedDay?.date?.toLocaleString("en-US", { weekday: "long" })}
+                  {isToday(calendar?.selectedDay?.date)
+                    ? "Today"
+                    : Platform.OS === "ios"
+                    ? `${calendar?.selectedDay?.date?.toLocaleString("en-US", { weekday: "long" })}`
+                    : `${calendar?.selectedDay?.date && format(calendar.selectedDay.date, "EEEE", { locale: enUS })}`}
                 </CustomText>
               </View>
             )}

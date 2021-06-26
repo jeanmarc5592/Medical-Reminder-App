@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { isToday } from "date-fns";
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { isToday, format } from "date-fns";
+import { enUS } from "date-fns/locale";
+import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native'
 import { withTheme } from 'react-native-elements';
 import { getWeekDays } from '../utils/getWeekDays';
 import { setSelectedDay } from '../actions/calendar';
@@ -26,24 +27,28 @@ const Calendar = ({ theme }) => {
     return (
       <>
         <CustomText style={styles.yearTitle} fontWeight="medium">
-            {date?.toLocaleString("en-US", { month: "long", timeZone: "UTC" }).toUpperCase()}, {date?.getFullYear()}
+          {Platform.OS === "ios"
+            ? `${date?.toLocaleString("en-US", { month: "long", timeZone: "UTC" }).toUpperCase()}, ${date?.getFullYear()}`
+            : `${date && format(date, "MMMM, Y", { locale: enUS }).toUpperCase()}`}
         </CustomText>
         <View style={styles.weekContainer}>
           {week.map((weekday) => {
             const isSelectedDay = weekday.id === selectedDay?.id;
             return (
-              <TouchableOpacity 
-                activeOpacity={!isSelectedDay ? 0.2 : 1 }
+              <TouchableOpacity
+                activeOpacity={!isSelectedDay ? 0.2 : 1}
                 onPress={() => {
                   // Only change selected day if it's NOT selected yet
                   if (!isSelectedDay) {
-                    dispatch(setSelectedDay(weekday))
+                    dispatch(setSelectedDay(weekday));
                   }
                 }}
-                key={weekday.formatted} 
-                style={[ styles.weekDay, getBackgroundColor(theme, isSelectedDay) ]}
-            >
-                <CustomText fontWeight="bold" h4 style={styles.weekDayIndex}>{weekday.day}</CustomText>
+                key={weekday.formatted}
+                style={[styles.weekDay, getBackgroundColor(theme, isSelectedDay)]}
+              >
+                <CustomText fontWeight="bold" h4 style={styles.weekDayIndex}>
+                  {weekday.day}
+                </CustomText>
                 <CustomText style={styles.weekDayFormatted}>{weekday.formatted.toUpperCase()}</CustomText>
               </TouchableOpacity>
             );
