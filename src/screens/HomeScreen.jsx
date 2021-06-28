@@ -1,13 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Alert, View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { withTheme, FAB } from 'react-native-elements';
 import { MaterialIcons } from "@expo/vector-icons";
+import Constants from 'expo-constants';
 import MenuDrawer from "react-native-side-drawer";
 import { signUserOut, getUser } from '../api/firebase';
-import { Screen, CustomText, IntakesProgress, Calendar, IntakesList } from '../components';
+import { saveToSecureStore, getFromSecureStore } from '../api/secureStore';
+import * as Notifications from "expo-notifications";
+import { Screen, CustomText, IntakesProgress, Calendar, IntakesList, CustomButton } from '../components';
 import { setUserData } from '../actions/user';
 import { pressOnIntake, setIntakesForToday } from '../actions/intakes';
+
+
+// TODO: Create in separate file
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  return token;
+}
+
+
+// TODO: Create in separate file
+async function schedulePushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "You've got mail! 📬",
+      body: "Here is the notification body",
+      data: { data: "goes here" },
+    },
+    trigger: { seconds: 2 },
+  });
+}
 
 const HomeScreen = ({ navigation, theme }) => {
   const dispatch = useDispatch();
@@ -38,6 +86,16 @@ const HomeScreen = ({ navigation, theme }) => {
     });
     return unsubscribe;
   });
+
+  useEffect(() => {
+    const bootstrapAsync = async () => {
+      let deviceToken = await getFromSecureStore("deviceToken");
+      if (deviceToken) return;
+      registerForPushNotificationsAsync().then(token => saveToSecureStore("deviceToken", token));
+
+    }
+    bootstrapAsync();
+  }, []);
 
   const drawerContent = () => {
     return (
@@ -80,6 +138,7 @@ const HomeScreen = ({ navigation, theme }) => {
           buttonStyle={{ borderRadius: 50 }}
           onPress={() => navigation.navigate("Add")}
         />
+        <CustomButton title="NOTIFICATION" onPress={async () => await schedulePushNotification()} />
       </Screen>
     </MenuDrawer>
   );
