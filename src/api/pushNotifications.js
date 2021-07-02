@@ -1,6 +1,18 @@
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { Platform, Alert } from 'react-native';
+import getEnvVars from "../../environment";
+
+const { EXPO_PUSH_SERVER_URL } = getEnvVars();
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 
 /**
  * ********************************************* 
@@ -37,4 +49,39 @@ export const registerForPushNotificationsAsync = async () => {
   }
 
   return token;
+};
+
+
+
+/**
+ * ***********************************
+ * **** Sends a push notification ****
+ * ***********************************
+ * @param {String} expoPushToken - Push Token from the individual device
+ * @param {String} messageTitle - Title that shows up in the notification
+ * @param {String} messageBody - Body Text that shows up in the notification
+ * @returns {Void} - Nothing
+ */
+export const sendPushNotification = async (expoPushToken, messageTitle = "", messageBody = "") => {
+  if (!expoPushToken || !EXPO_PUSH_SERVER_URL) {
+    return;
+  }
+
+  const message = {
+    to: expoPushToken,
+    sound: "default",
+    title: messageTitle,
+    body: messageBody,
+    data: { someData: "goes here" },
+  };
+
+  await fetch(EXPO_PUSH_SERVER_URL, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Accept-encoding": "gzip, deflate",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(message),
+  });
 }

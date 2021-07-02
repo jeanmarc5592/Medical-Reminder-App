@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Alert, View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { withTheme, FAB } from 'react-native-elements';
@@ -10,24 +10,14 @@ import * as Notifications from "expo-notifications";
 import { Screen, CustomText, IntakesProgress, Calendar, IntakesList, CustomButton } from '../components';
 import { setUserData } from '../actions/user';
 import { pressOnIntake, setIntakesForToday } from '../actions/intakes';
-import { registerForPushNotificationsAsync } from '../api/pushNotifications';
-
-// **** TO TEST ****
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: "Here is the notification body",
-      data: { data: "goes here" },
-    },
-    trigger: { seconds: 2 },
-  });
-}
+import { registerForPushNotificationsAsync, sendPushNotification } from '../api/pushNotifications';
 
 const HomeScreen = ({ navigation, theme }) => {
   const dispatch = useDispatch();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [token, setToken] = useState("");
   const { user, calendar, intakes } = useSelector((state) => state);
+  const responseListener = useRef();
 
   useEffect(() => {
     const onSuccess = (userData) => dispatch(setUserData(userData));
@@ -57,11 +47,27 @@ const HomeScreen = ({ navigation, theme }) => {
   useEffect(() => {
     const bootstrapAsync = async () => {
       let deviceToken = await getFromSecureStore("deviceToken");
-      if (deviceToken) return;
-      registerForPushNotificationsAsync().then(token => saveToSecureStore("deviceToken", token));
+      // If a deviceToken is already saved just set the token state and return early
+      if (deviceToken) {
+        return setToken(deviceToken);
+      }
+      // Else register a new one, save it to secure store and set the token state
+      registerForPushNotificationsAsync().then((token) => {
+        saveToSecureStore("deviceToken", token);
+        setToken(deviceToken);
+      });
+    };
 
-    }
     bootstrapAsync();
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(responseListener.current);
+    }
   }, []);
 
   const drawerContent = () => {
@@ -105,7 +111,7 @@ const HomeScreen = ({ navigation, theme }) => {
           buttonStyle={{ borderRadius: 50 }}
           onPress={() => navigation.navigate("Add")}
         />
-        <CustomButton title="NOTIFICATION" onPress={async () => await schedulePushNotification()} />
+        <CustomButton title="NOTIFICATION" onPress={async () => await sendPushNotification(token, "Hello", "This is a test")} />
       </Screen>
     </MenuDrawer>
   );
