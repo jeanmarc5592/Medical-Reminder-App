@@ -12,6 +12,7 @@ import { setUserData } from '../actions/user';
 import { pressOnIntake, setIntakesForToday } from '../actions/intakes';
 import { registerForPushNotificationsAsync, sendPushNotification } from '../api/pushNotifications';
 
+
 const HomeScreen = ({ navigation, theme }) => {
   const dispatch = useDispatch();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -62,6 +63,7 @@ const HomeScreen = ({ navigation, theme }) => {
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      // TODO: Navigate User to the Homescreen and highlight the current Reminder
       console.log(response);
     });
 
