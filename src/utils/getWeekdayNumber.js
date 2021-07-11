@@ -1,4 +1,10 @@
-// TODO: Add Docs
+/**
+ * ************************************
+ * **** Get the number of a weekday ***
+ * ************************************
+ * @param {String} weekdayString - Weekday 
+ * @returns {Number} - The number for the provided weekDay with 1 indicating Sunday
+ */
 
 export const getWeekdayNumber = (weekdayString = "") => {
     if (!weekdayString) {

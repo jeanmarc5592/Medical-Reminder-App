@@ -1,3 +1,10 @@
+/**
+ * *****************************************************
+ * **** Generates the timezone for a provided month ****
+ * *****************************************************
+ * @param {Number} month - Current month
+ * @returns {String} - Timezone Format for the specific month
+ */
 export const getGermanUTC = (month) => {
     if (!month) {
         throw new Error("Must provide month!");
