@@ -10,7 +10,7 @@ import * as Notifications from "expo-notifications";
 import { Screen, CustomText, IntakesProgress, Calendar, IntakesList, CustomButton } from '../components';
 import { setUserData } from '../actions/user';
 import { pressOnIntake, setIntakesForToday } from '../actions/intakes';
-import { registerForPushNotificationsAsync, sendPushNotification } from '../api/pushNotifications';
+import { registerForPushNotificationsAsync } from '../api/pushNotifications';
 
 
 const HomeScreen = ({ navigation, theme }) => {
@@ -60,6 +60,9 @@ const HomeScreen = ({ navigation, theme }) => {
     };
 
     bootstrapAsync();
+    
+    // Notifications.cancelAllScheduledNotificationsAsync().then(response => console.log(response))
+    Notifications.getAllScheduledNotificationsAsync().then(response => console.log(response));
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
@@ -113,7 +116,6 @@ const HomeScreen = ({ navigation, theme }) => {
           buttonStyle={{ borderRadius: 50 }}
           onPress={() => navigation.navigate("Add")}
         />
-        <CustomButton title="NOTIFICATION" onPress={async () => await sendPushNotification(token, "Hello", "This is a test")} />
       </Screen>
     </MenuDrawer>
   );

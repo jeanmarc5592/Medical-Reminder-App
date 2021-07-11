@@ -3,6 +3,7 @@ import * as Notifications from "expo-notifications";
 import { Platform, Alert } from 'react-native';
 import getEnvVars from "../../environment";
 import { getWeekdayNumber } from '../utils/getWeekdayNumber';
+import { getGermanUTC } from "../utils/getGermanUTC";
 
 const { EXPO_PUSH_SERVER_URL } = getEnvVars();
 
@@ -90,7 +91,7 @@ export const sendPushNotification = async (expoPushToken, messageTitle = "", mes
 
 
 
-// TODO: Implement function that handles GMT for summer and winter time
+
 /**
  * **********************************
  * **** Schedules a Notification ****
@@ -107,6 +108,7 @@ export const scheduleNotification = async (reminder, reminderDays, reminderName 
 
   let identifier;
   const [hour, minute] = reminder.split(/:| /);
+  const notificationTimezone = getGermanUTC(new Date().getMonth());
   const scheduleInput = {
     content: {
       title: "It's time for your next intake!",
@@ -120,7 +122,7 @@ export const scheduleNotification = async (reminder, reminderDays, reminderName 
       hour: parseInt(hour),
       minute: parseInt(minute),
       repeats: true,
-      timezone: "UTC+2",
+      timezone: notificationTimezone,
     };
     identifier = await Notifications.scheduleNotificationAsync(scheduleInput)
   } else if (reminderDays.length === 1) {
@@ -132,7 +134,7 @@ export const scheduleNotification = async (reminder, reminderDays, reminderName 
         hour: parseInt(hour),
         minute: parseInt(minute),
         repeats: true,
-        timezone: "UTC+2",
+        timezone: notificationTimezone,
       };
     });
     identifier = await Notifications.scheduleNotificationAsync(scheduleInput);
@@ -145,7 +147,7 @@ export const scheduleNotification = async (reminder, reminderDays, reminderName 
           hour: parseInt(hour),
           minute: parseInt(minute),
           repeats: true,
-          timezone: "UTC+2",
+          timezone: notificationTimezone,
         };
       identifier = await Notifications.scheduleNotificationAsync(scheduleInput);
       });
