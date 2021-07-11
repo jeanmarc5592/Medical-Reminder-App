@@ -88,9 +88,19 @@ export const sendPushNotification = async (expoPushToken, messageTitle = "", mes
 }
 
 
-// TODO: Add Docs
+
+
 // TODO: Implement function that handles GMT for summer and winter time
-export const scheduleNotification = async (reminder, reminderDays, notificationName = "") => {
+/**
+ * **********************************
+ * **** Schedules a Notification ****
+ * **********************************
+ * @param {String} reminder - Time when the notification(s) should be sent
+ * @param {Array} reminderDays - Selected Days when the notification(s) should be sent
+ * @param {String} reminderName - Name of the Reminder
+ * @returns {String} - Identifier of the scheduled Notification
+ */
+export const scheduleNotification = async (reminder, reminderDays, reminderName = "") => {
   if (!reminder || !reminderDays) {
     return;
   }
@@ -100,7 +110,7 @@ export const scheduleNotification = async (reminder, reminderDays, notificationN
   const scheduleInput = {
     content: {
       title: "It's time for your next intake!",
-      body: `${notificationName} is ready to be taken...`,
+      body: `${reminderName} is ready to be taken...`,
       sound: "default"
     },
   };
@@ -143,9 +153,3 @@ export const scheduleNotification = async (reminder, reminderDays, notificationN
 
     return identifier;
 };  
-
-// TODO: Add Docs & Implement correctly
-export const getScheduledNotifications = () => {
-  // const scheduledNotifications = await Notifications.getAllScheduledNotificationsAsync();
-  // return scheduledNotifications;
-}
