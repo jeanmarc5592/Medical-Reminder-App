@@ -4,9 +4,10 @@
  * ************************************
  * @param {String} weekdayString - Weekday 
  * @returns {Number} - The number for the provided weekDay with 1 indicating Sunday
+ * @throws {String} - Error Message if the weekdayString is falsy
  */
 
-export const getWeekdayNumber = (weekdayString = "") => {
+export const getWeekdayNumber = (weekdayString) => {
     if (!weekdayString) {
         throw new Error("Must provide a valid weekday String!");
     }

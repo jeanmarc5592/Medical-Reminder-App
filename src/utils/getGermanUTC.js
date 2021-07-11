@@ -4,6 +4,7 @@
  * *****************************************************
  * @param {Number} month - Current month
  * @returns {String} - Timezone Format for the specific month
+ * @throws {String} - Error message if the input month is falsy
  */
 export const getGermanUTC = (month) => {
     if (!month) {
