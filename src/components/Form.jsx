@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ScrollView, TouchableOpacity, Appearance, Alert, View, StyleSheet, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
-import { enUS } from 'date-fns/locale';
+import { deAT } from 'date-fns/locale';
 import CustomInput from './CustomInput'
 import CustomText from './CustomText'
 import CustomButton from './CustomButton'
@@ -12,6 +12,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
 import { editMedicine, deleteMedicine, addMedicine } from '../api/firebase';
+import { scheduleNotification } from '../api/pushNotifications';
 import { editIntake } from '../actions/intakes';
 import { MEDICINE_TYPES, MEDICINE_DAYS } from '../constants';
 import { CheckmarkIcon } from '../icons';
@@ -62,22 +63,25 @@ const Form = ({ theme, type = "Add" }) => {
       setButtonDisabled(!hasUpdatedValues || hasEmptyValues);
     }, [formState]);
 
-    const submitForm = () => {
+    const submitForm = async () => {
         if (type === "Add") {
             const onAddSuccess = () => {
               dispatch(editIntake(formState));
-              Alert.alert("Medicine added!", 'Your Medicine has been added successfully. You can return to Home by clicking on "Ok"', [
+              Alert.alert("Medicine added!", 'You can return to Home by clicking on "Ok"', [
                 { text: "Ok", onPress: () => navigation.navigate("Home"), style: "cancel" },
               ]);
             };
             const onAddFailure = () => Alert.alert("Something went wrong. Please try again");
-            addMedicine(formState, onAddSuccess, onAddFailure);
+            const notificationId = await scheduleNotification(formState.reminder, formState.reminderDays, formState.name);
+            const payload = { ...formState, notificationId };
+            addMedicine(payload, onAddSuccess, onAddFailure);
         } else if (type === "Edit") {
+          // TODO: Edit the specific Notification (grab id, filter it out, and add the new updated one)
             const onEditSuccess = () => {
                 dispatch(editIntake(formState))
                 Alert.alert(
                     'Medicine updated!',
-                    'Your Medicine has been updated successfully. You can return to Home by clicking on "Ok"',
+                    'You can return to Home by clicking on "Ok"',
                     [ { text: "Ok", onPress: () => navigation.navigate("Home"), style: "cancel" } ],
                 )
             };
@@ -87,9 +91,10 @@ const Form = ({ theme, type = "Add" }) => {
     }
 
     const onDeleteMedicine = () => {
+      // TODO: Cancel specific Notifications as well (Get them from getAllScheduledNotificationsAsync() and filter them out to cancel)
         const onDeleteSuccess = () => {
           dispatch(editIntake(formState));
-          Alert.alert("Medicine deleted!", 'Your Medicine has been deleted successfully. You can return to Home by clicking on "Ok"', [
+          Alert.alert("Medicine deleted!", 'You can return to Home by clicking on "Ok"', [
             { text: "Ok", onPress: () => navigation.navigate("Home"), style: "cancel" },
           ]);
         };
@@ -100,8 +105,8 @@ const Form = ({ theme, type = "Add" }) => {
     const handleDatePickerConfirm = date => {
         const formattedTimeString =
           Platform.OS === "ios"
-            ? date?.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit", formatMatcher: "basic" })
-            : format(date, "hh:mm aaaaa'm'", { locale: enUS }).toUpperCase();
+            ? date?.toLocaleString("de-AT", { hour: "2-digit", minute: "2-digit", formatMatcher: "basic" })
+            : format(date, "hh:mm", { locale: deAT }).toUpperCase();
         setFormState({ ...formState, reminder: formattedTimeString });
         hideDatePicker();
     }
