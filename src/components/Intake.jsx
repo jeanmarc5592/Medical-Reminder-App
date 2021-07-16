@@ -103,7 +103,7 @@ const DefaultIntake = ({ taken, name, amount, type, dose, reminder, theme }) => 
   **********************************
 */
 
-const Intake = ({ id, takenOn, name, amount, type, dose, reminder, reminderDays, theme }) => {
+const Intake = ({ id, takenOn, name, amount, type, dose, reminder, reminderDays, theme, notificationId }) => {
     const { calendar, intakes } = useSelector(state => state);
     const dispatch = useDispatch();
     const [taken, setTaken] = useState(null);
@@ -118,7 +118,8 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, reminderDays,
       reminderDays,
       theme,
       setTaken,
-      taken
+      taken,
+      notificationId
     }
 
     const storeProps = {
@@ -128,6 +129,7 @@ const Intake = ({ id, takenOn, name, amount, type, dose, reminder, reminderDays,
       amount,
       type,
       dose,
+      notificationId,
       reminder,
       reminderDays
     };

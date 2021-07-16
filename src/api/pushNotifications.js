@@ -155,3 +155,17 @@ export const scheduleNotification = async (reminder, reminderDays, reminderName 
 
     return identifier;
 };  
+
+
+
+
+/**
+ * ***************************************
+ * **** Cancels a single notification ****
+ * ***************************************
+ * @param {String} id - Identifier of the individual scheduled Notification
+ * @returns {Void} - Nothing
+ */
+export const cancelSingleNotification = async (id = "") => {
+  await Notifications.cancelScheduledNotificationAsync(id);
+}

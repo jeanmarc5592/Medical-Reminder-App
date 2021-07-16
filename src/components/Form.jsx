@@ -12,11 +12,11 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
 import { editMedicine, deleteMedicine, addMedicine } from '../api/firebase';
-import { scheduleNotification } from '../api/pushNotifications';
+import { scheduleNotification, cancelSingleNotification } from '../api/pushNotifications';
 import { editIntake } from '../actions/intakes';
 import { MEDICINE_TYPES, MEDICINE_DAYS } from '../constants';
 import { CheckmarkIcon } from '../icons';
-
+import * as Notifications from "expo-notifications";
 
 const Form = ({ theme, type = "Add" }) => {
     const initialAddState = {
@@ -91,7 +91,6 @@ const Form = ({ theme, type = "Add" }) => {
     }
 
     const onDeleteMedicine = () => {
-      // TODO: Cancel specific Notifications as well (Get them from getAllScheduledNotificationsAsync() and filter them out to cancel)
         const onDeleteSuccess = () => {
           dispatch(editIntake(formState));
           Alert.alert("Medicine deleted!", 'You can return to Home by clicking on "Ok"', [
@@ -99,6 +98,7 @@ const Form = ({ theme, type = "Add" }) => {
           ]);
         };
         const onDeleteFailure = () => Alert.alert("Something went wrong. Please try again");
+        cancelSingleNotification(initialState.notificationId);
         deleteMedicine(formState.id, onDeleteSuccess, onDeleteFailure);
     }
 
