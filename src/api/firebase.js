@@ -1,6 +1,7 @@
 import * as firebase from "firebase";
 import "firebase/firestore";
 import { Alert } from "react-native";
+import { scheduleNotification, cancelSingleNotification } from "./pushNotifications";
 
 /**
  * ***************************
@@ -233,6 +234,8 @@ export const deleteMedicine = async (id = "", onSuccessHandler = () => {}, onErr
  * @throws {String} - Error message if something went wrong adding the medicine
  */
 export const addMedicine = async (newMedicine = {}, onSuccessHandler = () => {}, onErrorHandler = () => {}) => {
+  let notificationId;
+
   try {
     const currentUser = firebase.auth().currentUser;
     const db = firebase.firestore();
@@ -242,14 +245,25 @@ export const addMedicine = async (newMedicine = {}, onSuccessHandler = () => {},
     dbUser = dbUser.data();
     const { reminders } = dbUser;
 
+    // Schedule a notification for that new medicine
+    notificationId = await scheduleNotification(newMedicine.reminder, newMedicine.reminderDays, newMedicine.name);
+
+    if (!notificationId) {
+      throw new Error();
+    }
+    
+    const payload = { ...newMedicine, notificationId };
+
     // Add payload object (new medicine) to reminders Array
-    const updatedReminders = reminders.concat(newMedicine);
+    const updatedReminders = reminders.concat(payload);
 
     // Update document with the updated reminders array
     await db.collection("users").doc(currentUser.uid).update({ reminders: updatedReminders });
 
     onSuccessHandler();
   } catch (error) {
+    // Cancel Notification if something went wrong
+    cancelSingleNotification(notificationId);
     console.log(error);
     onErrorHandler();
   }

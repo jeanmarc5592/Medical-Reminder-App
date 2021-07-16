@@ -72,9 +72,7 @@ const Form = ({ theme, type = "Add" }) => {
               ]);
             };
             const onAddFailure = () => Alert.alert("Something went wrong. Please try again");
-            const notificationId = await scheduleNotification(formState.reminder, formState.reminderDays, formState.name);
-            const payload = { ...formState, notificationId };
-            addMedicine(payload, onAddSuccess, onAddFailure);
+            addMedicine(formState, onAddSuccess, onAddFailure);
         } else if (type === "Edit") {
           // TODO: Edit the specific Notification (grab id, filter it out, and add the new updated one)
             const onEditSuccess = () => {
@@ -86,6 +84,7 @@ const Form = ({ theme, type = "Add" }) => {
                 )
             };
             const onEditFailure = () => Alert.alert("Something went wrong. Please try again");
+            Notifications.getAllScheduledNotificationsAsync().then((response) => console.log(response));
             editMedicine(formState, onEditSuccess, onEditFailure);
         }
     }
