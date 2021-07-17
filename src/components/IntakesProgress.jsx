@@ -10,6 +10,7 @@ import CustomText from './CustomText';
 const IntakesProgress = ({ theme }) => {
     const { user, calendar, intakes } = useSelector(state => state);
     const [takenToday, setTakenToday] = useState([]);
+    const [progressFill, setProgressFill] = useState(0);
 
     useEffect(() => {
       const takenMedicinesToday = [];
@@ -22,6 +23,11 @@ const IntakesProgress = ({ theme }) => {
       });
       setTakenToday(takenMedicinesToday);
     }, [user?.newMedicineTaken, calendar?.selectedDay?.date, intakes?.intakesForToday]);
+
+    useEffect(() => {
+      const fill = (takenToday.length * 100) / intakes?.intakesForToday?.length;
+      setProgressFill(fill);
+    }, [takenToday, intakes?.intakesForToday]);
 
     const allMedicinesTaken = useMemo(() => {
       if (takenToday.length !== 0 && intakes?.intakesForToday?.length !== 0) {
@@ -36,7 +42,7 @@ const IntakesProgress = ({ theme }) => {
           <AnimatedCircularProgress
             size={200}
             width={15}
-            fill={(takenToday.length * 100) / intakes?.intakesForToday?.length}
+            fill={progressFill}
             tintColor={takenToday.length === intakes?.intakesForToday?.length ? theme.text.green : theme.background.secondary}
             backgroundColor={theme.background.lightGrey}
             rotation={0}
