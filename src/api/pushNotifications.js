@@ -138,7 +138,7 @@ export const scheduleNotification = async (reminder, reminderDays, reminderName 
       };
     });
     identifier = await Notifications.scheduleNotificationAsync(scheduleInput);
-    } else {
+    } else if (reminderDays.length > 0 && reminderDays.length < 7) {
       // ON MULTIPLE DAYS PER WEEK
       reminderDays.forEach(async (day) => {
         const weekDayNumber = getWeekdayNumber(day);
@@ -149,7 +149,7 @@ export const scheduleNotification = async (reminder, reminderDays, reminderName 
           repeats: true,
           timezone: notificationTimezone,
         };
-      identifier = await Notifications.scheduleNotificationAsync(scheduleInput);
+        identifier = await Notifications.scheduleNotificationAsync(scheduleInput);
       });
     }
 
@@ -168,4 +168,27 @@ export const scheduleNotification = async (reminder, reminderDays, reminderName 
  */
 export const cancelSingleNotification = async (id = "") => {
   await Notifications.cancelScheduledNotificationAsync(id);
+}
+
+
+
+
+
+/**
+ * *********************************************
+ * **** Returns all scheduled notifications ****
+ * *********************************************
+ * @param {Void} - Nothing
+ * @returns {Array} - All Scheduled Notifications
+ */
+export const getAllNotifications = async () => {
+  try {
+    let notifications;
+    Notifications.getAllScheduledNotificationsAsync().then(res => notifications = res);
+    if (notifications) {
+      return notifications;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }

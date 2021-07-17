@@ -12,11 +12,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import uuid from "react-native-uuid";
 import { editMedicine, deleteMedicine, addMedicine } from '../api/firebase';
-import { scheduleNotification, cancelSingleNotification } from '../api/pushNotifications';
 import { editIntake } from '../actions/intakes';
 import { MEDICINE_TYPES, MEDICINE_DAYS } from '../constants';
 import { CheckmarkIcon } from '../icons';
-import * as Notifications from "expo-notifications";
 
 const Form = ({ theme, type = "Add" }) => {
     const initialAddState = {
@@ -74,7 +72,6 @@ const Form = ({ theme, type = "Add" }) => {
             const onAddFailure = () => Alert.alert("Something went wrong. Please try again");
             addMedicine(formState, onAddSuccess, onAddFailure);
         } else if (type === "Edit") {
-          // TODO: Edit the specific Notification (grab id, filter it out, and add the new updated one)
             const onEditSuccess = () => {
                 dispatch(editIntake(formState))
                 Alert.alert(
@@ -84,7 +81,6 @@ const Form = ({ theme, type = "Add" }) => {
                 )
             };
             const onEditFailure = () => Alert.alert("Something went wrong. Please try again");
-            Notifications.getAllScheduledNotificationsAsync().then((response) => console.log(response));
             editMedicine(formState, onEditSuccess, onEditFailure);
         }
     }
@@ -97,8 +93,7 @@ const Form = ({ theme, type = "Add" }) => {
           ]);
         };
         const onDeleteFailure = () => Alert.alert("Something went wrong. Please try again");
-        cancelSingleNotification(initialState.notificationId);
-        deleteMedicine(formState.id, onDeleteSuccess, onDeleteFailure);
+        deleteMedicine(formState.id, initialState.notificationId , onDeleteSuccess, onDeleteFailure);
     }
 
     const handleDatePickerConfirm = date => {
@@ -303,7 +298,7 @@ const styles = (theme, isChecked = false) =>
       borderColor: theme.text.light,
     },
     arrowIconStyle: {
-      color: theme.text.light,
+      // color: theme.text.light,
     },
     placeholderStyle: {
       color: theme.text.light,

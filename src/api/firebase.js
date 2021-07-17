@@ -2,6 +2,7 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { Alert } from "react-native";
 import { scheduleNotification, cancelSingleNotification } from "./pushNotifications";
+import * as Notifications from 'expo-notifications';
 
 /**
  * ***************************
@@ -164,6 +165,25 @@ export const editMedicine = async (editedMedicine = {}, onSuccessHandler = () =>
     const currentUser = firebase.auth().currentUser;
     const db = firebase.firestore();
 
+    // Get all scheduled Notifications
+    const allNotifications = await Notifications.getAllScheduledNotificationsAsync();
+
+    // Find the notification of the edited medicine
+    const notificationToEdit = allNotifications.find((notification) => notification.identifier === editedMedicine.notificationId);
+
+    // Cancel it
+    if (!notificationToEdit) {
+      throw new Error("`notificationToEdit` is not defined");
+    }
+    cancelSingleNotification(notificationToEdit.identifier);
+
+    // Schedule a new notification with the updates
+    const notificationId = await scheduleNotification(editedMedicine.reminder, editedMedicine.reminderDays, editedMedicine.name);
+
+    if (!notificationId) {
+      throw new Error("Something went wrong scheduling the new notification");
+    }
+
     // Get reminders array for the particular user
     let dbUser = await db.collection("users").doc(currentUser.uid).get();
     dbUser = dbUser.data();
@@ -176,6 +196,7 @@ export const editMedicine = async (editedMedicine = {}, onSuccessHandler = () =>
         updatedIntakeIndex = index;
       }
     });
+    editedMedicine.notificationId = notificationId;
     reminders[updatedIntakeIndex] = editedMedicine;
 
     // Update document with the updated reminders array
@@ -194,12 +215,13 @@ export const editMedicine = async (editedMedicine = {}, onSuccessHandler = () =>
  * **** Deletes an individual medicine ****
  * ****************************************
  * @param {String} id - Id of the medicine that should be deleted
+ * @param {String} notificationId - Identifier of the individual scheduled Notification
  * @param {Function} onSuccessHandler - Function that runs when the medicine got deleted successfully
  * @param {Function} onErrorHandler - Function that runs when something went wrong deleting the medicine
  * @returns {Void} - Nothing
  * @throws {String} - Error message if something went wrong deleting the medicine
  */
-export const deleteMedicine = async (id = "", onSuccessHandler = () => {}, onErrorHandler = () => {}) => {
+export const deleteMedicine = async (id = "", notificationId = "", onSuccessHandler = () => {}, onErrorHandler = () => {}) => {
   try {
     const currentUser = firebase.auth().currentUser;
     const db = firebase.firestore();
@@ -210,10 +232,13 @@ export const deleteMedicine = async (id = "", onSuccessHandler = () => {}, onErr
     const { reminders } = dbUser;
 
     // Filter the reminder with the provided ID out
-    const updatedReminders = reminders.filter(reminder => reminder.id !== id);
+    const updatedReminders = reminders.filter((reminder) => reminder.id !== id);
 
     // Update document with the updated reminders array
     await db.collection("users").doc(currentUser.uid).update({ reminders: updatedReminders });
+
+    // Cancel scheduled notification for that medicine
+    cancelSingleNotification(notificationId);
 
     onSuccessHandler();
   } catch (error) {
