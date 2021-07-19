@@ -55,7 +55,7 @@ To boost the user experience I decided to integrate haptic feedback. **Expo** co
 
 ## Challenges I had to take 💪🏻 
 
-One of the main challenges was to synchronize the App state with Firebase. For example when the user edited his reminder and switched back to the HomeScreen, the App had to fetch the new updated intakes and display the updates. Same goes for creating and deleting an individual intake. But *React* has got *useEffect* and *useEffect* hooks where a re-rendering of the components comes in very handy once the updated data is fetched successfully.
+One of the main challenges was to synchronize the App state with Firebase. For example when the user edited his reminder and switched back to the HomeScreen, the App had to fetch the new updated intakes and display the updates. Same goes for creating and deleting an individual intake. But *React* has got *useEffect* and *useStatet* hooks where a re-rendering of the components comes in very handy once the updated data is fetched successfully.
 
 Another major challenge that took me the longest to figure out was to schedule the *Expo Push Notifications*. That's because it was new to me (it's always hard before it becomes easy) and it's a quite complex topic with a complex documentation. But reading and understanding the documentation, researching for the solutions and trying them out is daily business for me. So I kept pushing through and finally I made it.
 
